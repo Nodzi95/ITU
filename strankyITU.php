@@ -1,9 +1,9 @@
-<?php
+﻿<?php
 
 function main($menu, $conn){
 ?>	<div>
 		<ul>
-			<li><a href="?menu=0">Domů</a></li>
+			<li><a href="?menu=0">DomÅ¯</a></li>
 			<li><a href="?menu=1">Vyuka</a></li>
 			<li><a href="?menu=2">Kontakt</a></li>		
 		</ul>
@@ -14,7 +14,7 @@ switch($menu){
 	case 0:?>
 		<div>
 			<p>
-				<span>Vítejte ve vyuce zvirat</span>
+				<span>VÃ­tejte ve vyuce zvirat</span>
 			</p>		
 		</div>
 	<?break;
@@ -86,12 +86,12 @@ switch($menu){
 
 
 	<form name="search_form" method="POST" >
-	<input type="checkbox" name="type[]" value="all" <?php if($all == 1) echo "checked"?>> V�e
-  	<input type="checkbox" name="type[]" value="selma" <?php if($selma == 1) echo "checked"?>> �elma
-	<input type="checkbox" name="type[]" value="sudo" <?php if($sudo == 1) echo "checked"?>> Sudokopytn�ci
+	<input type="checkbox" name="type[]" value="all" <?php if($all == 1) echo "checked"?>> Vše
+  	<input type="checkbox" name="type[]" value="selma" <?php if($selma == 1) echo "checked"?>> Šelma
+	<input type="checkbox" name="type[]" value="sudo" <?php if($sudo == 1) echo "checked"?>> Sudokopytníci
 	<input type="checkbox" name="type[]" value="hlodavci" <?php if($hlodavci == 1) echo "checked"?>> Hlodavci
-	<input type="checkbox" name="type[]" value="hmyz" <?php if($hmyz == 1) echo "checked"?>> Hmyzo�ravci
-	<input type="checkbox" name="type[]" value="primat" <?php if($primat == 1) echo "checked"?>> Prim�ti<br>
+	<input type="checkbox" name="type[]" value="hmyz" <?php if($hmyz == 1) echo "checked"?>> Hmyzožravci
+	<input type="checkbox" name="type[]" value="primat" <?php if($primat == 1) echo "checked"?>> Primáti<br>
 	<input type="submit" name="formSubmit" value="Filter"/>
 	</form>
 	
@@ -122,7 +122,10 @@ switch($menu){
 	case 2:?>
 		<div>
 			<p>
-				<span>Kontakt</span>
+				BoÅ¾etÄ›chova 2 <br>
+				Brno, KrÃ¡lovo Pole <br>
+				email: <a href="mailto:xnodza00@stud.fit.vutbr.cz">xnodza00@stud.fit.vutbr.cz</a><br>
+				tel: 123 456 789
 			</p>		
 		</div>
 	<?break;
