@@ -10,5 +10,5 @@ if(!mysql_select_db($name, $conn)){
 	echo "chyba pøi pøipojení k databázi";
 	exit();
 }
-mysql_query("SET NAMES 'cp1250'");
+mysql_set_charset('utf8');
 ?>
