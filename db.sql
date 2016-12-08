@@ -2,165 +2,19 @@
   SET foreign_key_checks = 0;
   SET time_zone = 'SYSTEM';
   SET sql_mode = 'NO_AUTO_VALUE_ON_ZERO';
--- CREATE NEW
-  DROP TABLE IF EXISTS terminal;
-  CREATE TABLE terminal (
-    ID int(5) unsigned NOT NULL AUTO_INCREMENT,
-    PRIMARY KEY (ID), 
-    nazev VARCHAR(20)
-  )ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
-
-  DROP TABLE IF EXISTS gate;
-  CREATE TABLE gate (
-    ID int(5) unsigned NOT NULL AUTO_INCREMENT,
-    PRIMARY KEY (ID), 
-    oznaceni  VARCHAR(20), 
-    terminal_ID int(5) unsigned,
-    KEY terminal (terminal_ID),
-    CONSTRAINT FOREIGN KEY (terminal_ID) REFERENCES terminal(ID) ON DELETE CASCADE ON UPDATE CASCADE
-  )ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
-
-  DROP TABLE IF EXISTS typ;
-  CREATE TABLE typ (
-    ID int(5) unsigned NOT NULL AUTO_INCREMENT,
-    PRIMARY KEY (ID), 
-    nazev  VARCHAR(20)
-  )ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
-
-  DROP TABLE IF EXISTS cestujici;
-  CREATE TABLE cestujici (
-    ID int(5) unsigned NOT NULL AUTO_INCREMENT,
-    PRIMARY KEY (ID), 
-    jmeno VARCHAR(30) NOT NULL,
-    prijmeni VARCHAR(30) NOT NULL,
-    login VARCHAR(30) NOT NULL,
-    pass VARCHAR(30) NOT NULL,
-    pozice INTEGER NOT NULL,
-    cislo_pasu VARCHAR(20), -- nebo cislo??
-    pohlavi INTEGER, -- 0 Muz, 1 Zena
-    datum_narozeni DATE
-  )ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
-
-  DROP TABLE IF EXISTS letadlo;
-  CREATE TABLE letadlo (
-    ID int(5) unsigned NOT NULL AUTO_INCREMENT,
-    PRIMARY KEY (ID), 
-    oznaceni  VARCHAR(20) NOT NULL, 
-    typ_ID int(5) unsigned,
-    vyrobce VARCHAR(30),
-    datum_vyroby DATE,
-    datum_revize DATE,
-    KEY typ (typ_ID),
-    CONSTRAINT FOREIGN KEY (typ_ID) REFERENCES typ(ID)  ON DELETE CASCADE ON UPDATE CASCADE
-  )ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
-
-  DROP TABLE IF EXISTS Osobni_letadlo;
-  CREATE TABLE Osobni_letadlo (
-    letadlo_ID int(5) unsigned,
-    PRIMARY KEY (letadlo_ID), 
-    Kapacita int(5),
-    Velikost_posadky int(5),
-    CONSTRAINT FOREIGN KEY (letadlo_ID) REFERENCES letadlo(ID) ON DELETE CASCADE ON UPDATE CASCADE
-  );
-
-  DROP TABLE IF EXISTS Nakladni_letadlo;
-  CREATE TABLE Nakladni_letadlo (
-    letadlo_ID int(5) unsigned,
-    PRIMARY KEY (letadlo_ID),  
-    Nosnost int(5),
-    CONSTRAINT FOREIGN KEY (letadlo_ID) REFERENCES letadlo(ID) ON DELETE CASCADE ON UPDATE CASCADE
-  );
-
-  DROP TABLE IF EXISTS Soukrome_letadlo;
-  CREATE TABLE Soukrome_letadlo (
-    letadlo_ID int(5) unsigned,
-    PRIMARY KEY (letadlo_ID),  
-    Majitel VARCHAR(70),
-    CONSTRAINT FOREIGN KEY (letadlo_ID) REFERENCES letadlo(ID) ON DELETE CASCADE ON UPDATE CASCADE
-  );  
-
-  DROP TABLE IF EXISTS sedadlo;
-  CREATE TABLE sedadlo (
-    ID int(5) unsigned NOT NULL AUTO_INCREMENT,
-    PRIMARY KEY (ID), 
-    letadlo_ID int(5) unsigned,
-    oznaceni VARCHAR(15) NOT NULL,
-    trida INTEGER,
-    rada INTEGER,
-    sloupec INTEGER,
-    KEY letadlo (letadlo_ID),
-    CONSTRAINT FOREIGN KEY (letadlo_ID) REFERENCES letadlo(ID) ON DELETE CASCADE ON UPDATE CASCADE
-  )ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
-
-  DROP TABLE IF EXISTS let;
-  CREATE TABLE let (
-    ID int(5) unsigned NOT NULL AUTO_INCREMENT,
-    PRIMARY KEY (ID), 
-    letadlo_ID int(5) unsigned,
-    misto_odletu VARCHAR(40) NOT NULL,
-    misto_pristani VARCHAR(40) NOT NULL,
-    gate_ID int(5) unsigned,
-    delka_letu int(5), -- v minutach
-    datum DATE,
-    KEY letadlo (letadlo_ID),
-    KEY gate (gate_ID),
-    CONSTRAINT FOREIGN KEY (letadlo_ID) REFERENCES letadlo(ID) ON DELETE CASCADE ON UPDATE CASCADE,
-    CONSTRAINT FOREIGN KEY (gate_ID) REFERENCES gate(ID) ON DELETE CASCADE ON UPDATE CASCADE
-  )ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
-
-  DROP TABLE IF EXISTS letenka;
-  CREATE TABLE letenka (
-    ID int(5) unsigned NOT NULL AUTO_INCREMENT,
-    PRIMARY KEY (ID), 
-    cestujici_ID int(5) unsigned,
-    let_ID int(5) unsigned,
-    sedadlo_ID int(5) unsigned,
-    CheckIn VARCHAR(20),
-    KEY cestujici (cestujici_ID),
-    KEY let (let_ID),
-    KEY sedadlo (sedadlo_ID),
-    CONSTRAINT FOREIGN KEY (cestujici_ID) REFERENCES cestujici(ID) ON DELETE CASCADE ON UPDATE CASCADE,
-    CONSTRAINT FOREIGN KEY (let_ID) REFERENCES let(ID) ON DELETE CASCADE ON UPDATE CASCADE,
-    CONSTRAINT FOREIGN KEY (sedadlo_ID) REFERENCES sedadlo(ID) ON DELETE CASCADE ON UPDATE CASCADE
-  )ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
-
-  DROP TABLE IF EXISTS gate_typ;
-  CREATE TABLE gate_typ (
-    gate_ID int(5) unsigned,
-    typ_ID int(5) unsigned,
-    KEY gate (gate_ID),
-    KEY typ (typ_ID),
-    CONSTRAINT FOREIGN KEY (gate_ID) REFERENCES gate(ID) ON DELETE CASCADE ON UPDATE CASCADE,
-    CONSTRAINT FOREIGN KEY (typ_ID) REFERENCES typ(ID) ON DELETE CASCADE ON UPDATE CASCADE
-  );  
-
-
--- INSERT DATA
-
-
-INSERT INTO typ (nazev) VALUES ('Osobni'),
-('Nakladni'),
-('Soukrome')
-ON DUPLICATE KEY UPDATE nazev = VALUES(nazev);
-
-
-INSERT INTO cestujici (jmeno, prijmeni, login, pass, pozice) VALUES 
-('Martin', 'Molek', 'martin', 'mm', 2),
-('Robin', 'Vyslouzil', 'robin', 'vv', 2),
-('Petr', 'Nodzak', 'nodzi', 'nn', 2)
-ON DUPLICATE KEY UPDATE jmeno = VALUES(jmeno), prijmeni = VALUES(prijmeni), cislo_pasu = VALUES(cislo_pasu), pohlavi = VALUES(pohlavi), pozice = VALUES(pozice);
 
 
 
 
 
-
-
-	DROP TABLE IF EXISTS user;
+DROP TABLE IF EXISTS user;
  	CREATE TABLE user (
     	nick VARCHAR(20),
+	password VARCHAR(20),
     	PRIMARY KEY (nick) 
   	)ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
+	
+	INSERT INTO `xmolek00`.`user` (`nick`, `password`) VALUES ('martin', 'mm'), ('nodzi', 'nn');
 
 	DROP TABLE IF EXISTS animal;
  	CREATE TABLE animal (
