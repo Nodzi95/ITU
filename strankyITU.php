@@ -1,4 +1,40 @@
-﻿<?php
+<?php
+
+
+function test($max){
+	return rand(1, $max);
+}
+
+function testik($ID, $conn){
+		$query = "SELECT * FROM animal WHERE ID=$ID";
+		$result = mysql_query($query, $conn);
+		$data = mysql_fetch_assoc($result);
+		?><img src="<?echo $data['picture'];?>" style="width:300px;height:228px"> <br /><?
+		//echo "<b>".$data['name']."</b>";
+		//$names = array($answer => 0, "odpoved1" => 0, "odpoved2" => 0, "odpoved3" => 0);
+		//$answers = array();
+		
+    		//$query = "SELECT *, 0 AS answ FROM animal WHERE ID<> $ID LIMIT 3 UNION SELECT *, 1 AS answ FROM animal WHERE ID=$ID ORDER BY RAND() ";
+    		$query = "(SELECT * FROM animal WHERE ID <> $ID ORDER BY RAND() LIMIT 3) UNION (SELECT * FROM animal WHERE ID = $ID)  ORDER BY RAND()";
+		$res = mysql_query($query, $conn);
+    		while($data=mysql_fetch_array($res)){
+    			?>
+    			<form method="POST">
+	    			<tr><td><?
+		              	if ($data["ID"] != $ID) 
+		                	echo $data["name"];
+		              	else
+		                	echo "<b>".$data['name']."</b>";
+		                ?>
+		      		<?echo $data["ID"];?></td>
+	    			<td><input type="hidden" name="hidden_lID" value="<?php echo $data["ID"];?>">
+				<td><input type="hidden" name="hidden_num" value="<?php echo $_POST["hidden_num"]++;?>">
+				<input type="submit" name="answ" value="Odpovědět"></td></tr>
+    			</form>
+          		<?
+    		}
+
+}
 
 function main($menu, $conn){
 ?>
@@ -39,32 +75,36 @@ switch($menu){
 	$hmyz = 0;
 	$primat = 0;
 	$prikaz = "";
-	if(isset($_POST['formSubmit'])){
-		if(isset($_POST['type'])){
-			if(in_array('all', $_POST['type'])){
+	if(isset($_POST['formSubmit']) || isset($_SESSION['formSubmit'])){
+		if(isset($_POST['type']) || isset($_SESSION['type'])){
+			if(isset($_POST['type'])) $array = $_POST['type'];			
+			else $array = $_SESSION['type'];
+			
+			//print_r($array);
+			if(in_array('all', $array)){
 				global $res, $all, $prikaz;
 				$res = mysql_query($query, $conn);
 				$all = 1;
 			}
 			else{
 				global $res, $all, $selma, $sudo, $hlodavci, $hmyz, $primat;
-				if(in_array('selma', $_POST['type'])){
+				if(in_array('selma', $array)){
 					$sql_extra[] = " type = 'selma'";
 					$selma = 1;
 				}
-				if(in_array('sudo', $_POST['type'])){
+				if(in_array('sudo', $array)){
 					$sql_extra[] = " type = 'sudo'";
 					$sudo = 1;
 				}
-				if(in_array('hlodavci', $_POST['type'])){
+				if(in_array('hlodavci', $array)){
 					$sql_extra[] = " type = 'hlodavci'";
 					$hlodavci = 1;
 				}
-				if(in_array('hmyz', $_POST['type'])){
+				if(in_array('hmyz', $array)){
 					$sql_extra[] = " type = 'hmyz'";
 					$hmyz = 1;
 				}
-				if(in_array('primat', $_POST['type'])){
+				if(in_array('primat', $array)){
 					$sql_extra[] = " type = 'primat'";
 					$primat = 1;
 				}
@@ -74,7 +114,9 @@ switch($menu){
 				//echo $search_term;
 				$prikaz = " WHERE {$search_term}";
 				$query .= $prikaz;
+				//echo $query;
 				$res = mysql_query($query, $conn);
+				
 			}
 		}
 		else{
@@ -86,6 +128,7 @@ switch($menu){
 	else{
 		global $res, $all;
 		$all = 1;
+		echo $query;
 		$res = mysql_query($query, $conn);
 	}
 	?>
@@ -106,15 +149,16 @@ switch($menu){
 	
 	<?
 		
-		if($res != ""){
+		//if($res != ""){
 			$sql = "SELECT COUNT(*) FROM animal ";
 			if($prikaz != ""){
 				$sql .= $prikaz;
 			}
+			//echo $sql;
 			$result = mysql_query($sql, $conn);
 			$r = mysql_fetch_row($result);
 			$numrows = $r[0];
-			$rowsperpage = 10;
+			$rowsperpage = 1;
 			$totalpages = ceil($numrows / $rowsperpage);
 			if(isset($_GET['currentpage']) && is_numeric($_GET['currentpage'])){
 				$currentpage = (int) $_GET['currentpage'];
@@ -165,7 +209,9 @@ switch($menu){
 				echo " <a href='{$_SERVER['PHP_SELF']}?menu=1&currentpage=$nextpage'>></a> ";
 				echo " <a href='{$_SERVER['PHP_SELF']}?menu=1&currentpage=$totalpages'>>></a> ";
 			}
-		}
+			$_SESSION["formSubmit"] = "Filter";
+			$_SESSION["type"] = $array;
+		//}
 	break;
 
 	case 2:?>
@@ -199,7 +245,15 @@ switch($menu){
 		</form>
 		</table>
 	<?break;
-			
+		
+	case 5:
+    		$ID =  test(62); 
+		testik($ID, $conn);
+		break;	
+
+	default:
+		$_GET["menu"] = 0;
+	break;
 	}
 
 }

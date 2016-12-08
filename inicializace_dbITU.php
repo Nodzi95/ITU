@@ -1,8 +1,8 @@
 <?
 $server = "localhost:/var/run/mysql/mysql.sock";
-$user = "xnodza00";
-$pass = "ucicum6a";
-$name = "xnodza00";
+$user = "xmolek00";
+$pass = "7opantom";
+$name = "xmolek00";
 
 $conn= mysql_connect($server, $user, $pass) or die("Nelze se pøipojit");
 

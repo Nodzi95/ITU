@@ -41,8 +41,8 @@
 
 
 
-
-
+if(isset($_POST["hidden_num"])) 
+	echo $_POST["hiddem_num"];
 
 
 
