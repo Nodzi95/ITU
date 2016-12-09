@@ -39,22 +39,25 @@ function testik($ID, $conn){
 function main($menu, $conn){
 ?>
 <?if(isset($_SESSION["user"])){
-		echo "lognuty uzivatel: " . $_SESSION["user"];	
+		//echo "lognuty uzivatel: " . $_SESSION["user"];	
 }?>
-		<ul>
-			<li><a href="?menu=0">Domů</a></li>
-			<li><a href="?menu=1">Vyuka</a></li>
-			<li><a href="?menu=2">Kontakt</a></li>
-				
-			<?if(isset($_SESSION["user"])){?>
-			<li><a href="?menu=5">Test</a></li>
-			<li><a href="?menu=6">Výsledky</a></li>
-			<li><a href="?menu=7">Odhlásit</a></li>
-			<?}else{?>
-			<li><a href="?menu=3">Login</a></li>
-			<li><a href="?menu=4">Registrovat</a></li>
-			<?}?>		
-		</ul>
+<table id="wrapper" style="">
+  <tr>
+    <td id="ff">
+  		<ul>
+  			<li><a href="?menu=0"><img src="pics/home.svg" alt="Domu"></a></li>
+  			<li><a href="?menu=1"><img src="pics/book.svg" alt="Vyuka"></a></li>
+  				
+  			<?if(isset($_SESSION["user"])){?>
+  			<li><a href="?menu=5"><img src="pics/exam.svg" alt="Test"></a></li>
+  			<li><a href="?menu=6">Výsledky</a></li>
+  			<?}else{
+  			//<li><a href="?menu=3"><img src="pics/login.svg" alt="Login"></a></li>
+  			//<li><a href="?menu=4">Registrovat</a></li>
+  			}?>		
+  		</ul>
+     </td>
+    <td id="fs">
 <?
 switch($menu){
 	case 0:?>
@@ -184,6 +187,8 @@ switch($menu){
 			$result = mysql_query($sql, $conn);
 			$data = mysql_fetch_assoc($result);
 			?><h2><?echo $data['name'];?></h2>
+
+
 			<?if($currentpage > 1){
 				$prevpage = $currentpage - 1;
 				$sql = "SELECT * FROM animal WHERE ID='".($data['ID']-1)."'";
@@ -194,7 +199,6 @@ switch($menu){
 			}?>
 			<img src="<?echo $data['picture'];?>" style="width:300px;height:228px"><?
 
-			
 
 			if($currentpage != $totalpages){
 				$nextpage = $currentpage + 1;
@@ -205,11 +209,13 @@ switch($menu){
 				?><img src="<?echo $pravo['picture'];?>" style="width:150px;height:114px"></a><?
 			}
 			?><br /><?
+			
 			$range = 3;
 
 			if($currentpage > 1){
 				echo " <a href='{$_SERVER['PHP_SELF']}?menu=1&currentpage=1'><<</a> ";
 			}
+
 			for($x = ($currentpage - $range); $x < (($currentpage + $range) + 1); $x++){
 				if(($x > 0) && ($x <= $totalpages)){
 					if($x == $currentpage){
@@ -270,7 +276,27 @@ switch($menu){
 		$_GET["menu"] = 0;
 	break;
 	}
+  ?>
+    </td>
+  </tr>
+  <tr>
+     <td id="sf">
+  		<ul>
+  			<li><a href="?menu=2">Kontakt</a></li>
+  			<?if(isset($_SESSION["user"])){?>
+  			<li><a href="?menu=7"><img src="pics/logout.svg" alt="Logout"></a></li>
+  			<?}else{?>
+  			<li><a href="?menu=3"><img src="pics/login.svg" alt="Login"></a></li>
+  			<li><a href="?menu=4">Registrovat</a></li>
+  			<?}?>		
+  		</ul>
+     </td>
+    <td id="ss">
+      Data2
+    </td>
+  </tr>
+</table>
 
+<?
 }
-
 ?>

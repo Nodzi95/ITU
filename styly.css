@@ -1,0 +1,13 @@
+* {margin: 0; padding: 0; }
+html, body {background-color: linen; height: 100%; width: 100%; }
+#wrapper {border-collapse: collapse; height: 100%; width: 100%; }
+//td {border: 1px solid black; }
+td {}
+#ff {width: 65px; background: darkblue; height: 50%; }
+#sf {width: 65px; background: lightblue; height: 50%; }
+#fs {background: lightgreen;}
+#ss {background: darkgreen;}
+ul {list-style-type: none; width: 65px; overflow:hidden; height: 100%; }
+li a {background-color: #dddddd; display: block; text-align:center; height: 65px; width: 65px; padding:5px 0 0 5px; }
+li a img {display: block; height: 55px; width: 55px; }
+li a:hover {background-color: red; }

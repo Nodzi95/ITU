@@ -4,6 +4,7 @@ $user = "xmolek00";
 $pass = "7opantom";
 $name = "xmolek00";
 
+
 $conn= mysql_connect($server, $user, $pass) or die("Nelze se pøipojit");
 
 if(!mysql_select_db($name, $conn)){
