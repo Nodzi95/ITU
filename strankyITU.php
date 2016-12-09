@@ -176,22 +176,39 @@ switch($menu){
 			}
 
 			$offset = ($currentpage - 1) * $rowsperpage;
-			$sql = "SELECT name, picture FROM animal ";
+			$sql = "SELECT * FROM animal ";
 			if($prikaz != ""){
 				$sql .= $prikaz;
 			}
 			$sql .= " LIMIT $offset, $rowsperpage";
 			$result = mysql_query($sql, $conn);
-			while($data = mysql_fetch_assoc($result)){
-				?><h2><?echo $data['name'];?></h2>
-				<img src="<?echo $data['picture'];?>" style="width:300px;height:228px"> <br /><?
+			$data = mysql_fetch_assoc($result);
+			?><h2><?echo $data['name'];?></h2>
+			<?if($currentpage > 1){
+				$prevpage = $currentpage - 1;
+				$sql = "SELECT * FROM animal WHERE ID='".($data['ID']-1)."'";
+				$result = mysql_query($sql, $conn);
+				$levo = mysql_fetch_assoc($result);
+				echo "<a href='{$_SERVER['PHP_SELF']}?menu=1&currentpage=$prevpage'>"
+				?><img src="<?echo $levo['picture'];?>" style="width:150px;height:114px"></a><?
+			}?>
+			<img src="<?echo $data['picture'];?>" style="width:300px;height:228px"><?
+
+			
+
+			if($currentpage != $totalpages){
+				$nextpage = $currentpage + 1;
+				$sql = "SELECT * FROM animal WHERE ID='".($data['ID']+1)."'";
+				$result = mysql_query($sql, $conn);
+				$pravo = mysql_fetch_assoc($result);
+				echo "<a href='{$_SERVER['PHP_SELF']}?menu=1&currentpage=$nextpage'>"
+				?><img src="<?echo $pravo['picture'];?>" style="width:150px;height:114px"></a><?
 			}
+			?><br /><?
 			$range = 3;
 
 			if($currentpage > 1){
 				echo " <a href='{$_SERVER['PHP_SELF']}?menu=1&currentpage=1'><<</a> ";
-				$prevpage = $currentpage - 1;
-				echo " <a href='{$_SERVER['PHP_SELF']}?menu=1&currentpage=$prevpage'><</a> ";
 			}
 			for($x = ($currentpage - $range); $x < (($currentpage + $range) + 1); $x++){
 				if(($x > 0) && ($x <= $totalpages)){
@@ -205,8 +222,6 @@ switch($menu){
 			}
 
 			if($currentpage != $totalpages){
-				$nextpage = $currentpage + 1;
-				echo " <a href='{$_SERVER['PHP_SELF']}?menu=1&currentpage=$nextpage'>></a> ";
 				echo " <a href='{$_SERVER['PHP_SELF']}?menu=1&currentpage=$totalpages'>>></a> ";
 			}
 			$_SESSION["formSubmit"] = "Filter";
