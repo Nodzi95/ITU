@@ -17,6 +17,7 @@ function testik($ID, $conn){
     		//$query = "SELECT *, 0 AS answ FROM animal WHERE ID<> $ID LIMIT 3 UNION SELECT *, 1 AS answ FROM animal WHERE ID=$ID ORDER BY RAND() ";
     		$query = "(SELECT * FROM animal WHERE ID <> $ID ORDER BY RAND() LIMIT 3) UNION (SELECT * FROM animal WHERE ID = $ID)  ORDER BY RAND()";
 		$res = mysql_query($query, $conn);
+		?><table><?
     		while($data=mysql_fetch_array($res)){
     			?>
     			<form method="POST">
@@ -27,12 +28,14 @@ function testik($ID, $conn){
 		                	echo "<b>".$data['name']."</b>";
 		                ?>
 		      		<?echo $data["ID"];?></td>
-	    			<td><input type="hidden" name="hidden_lID" value="<?php echo $data["ID"];?>">
-				<td><input type="hidden" name="hidden_num" value="<?php echo $_POST["hidden_num"]++;?>">
+	    			<td><input type="hidden" name="hidden_answer" value="<?php echo $data["ID"];?>">
+				<td><input type="hidden" name="hidden_success" value="<?php echo $ID;?>">
 				<input type="submit" name="answ" value="Odpovědět"></td></tr>
+				<input type="submit" name="konec" value="Ukončit test"></td>
     			</form>
           		<?
     		}
+		?></table><?
 
 }
 
@@ -60,7 +63,10 @@ function main($menu, $conn){
     <td id="fs">
 <?
 switch($menu){
-	case 0:?>
+	case 0:
+		unset($_SESSION['formSubmit']);
+		unset($_SESSION['type']);
+		?>
 			<p>
 				<span>Ví­tejte ve výuce zvířat</span>
 			</p>		
@@ -80,10 +86,19 @@ switch($menu){
 	$prikaz = "";
 	if(isset($_POST['formSubmit']) || isset($_SESSION['formSubmit'])){
 		if(isset($_POST['type']) || isset($_SESSION['type'])){
-			if(isset($_POST['type'])) $array = $_POST['type'];			
-			else $array = $_SESSION['type'];
-			
-			//print_r($array);
+			if(isset($_POST['formSubmit'])) {
+				if(isset($_POST['type'])){
+					$array = $_POST['type']; 
+				}
+				else{
+					$array = array();
+					$res = "";				
+				}
+
+			}			
+			else { 
+				$array = $_SESSION['type']; 
+			}
 			if(in_array('all', $array)){
 				global $res, $all, $prikaz;
 				$res = mysql_query($query, $conn);
@@ -112,13 +127,14 @@ switch($menu){
 					$primat = 1;
 				}
 				$all = 0;
-
-				$search_term = implode( " OR ", $sql_extra);
-				//echo $search_term;
-				$prikaz = " WHERE {$search_term}";
-				$query .= $prikaz;
-				//echo $query;
-				$res = mysql_query($query, $conn);
+				if(isset($sql_extra)){
+					$search_term = implode( " OR ", $sql_extra);
+					//echo $search_term;
+					$prikaz = " WHERE {$search_term}";
+					$query .= $prikaz;
+					//echo $query;
+					$res = mysql_query($query, $conn);
+				}
 				
 			}
 		}
@@ -131,7 +147,6 @@ switch($menu){
 	else{
 		global $res, $all;
 		$all = 1;
-		echo $query;
 		$res = mysql_query($query, $conn);
 	}
 	?>
@@ -152,7 +167,7 @@ switch($menu){
 	
 	<?
 		
-		//if($res != ""){
+		if($res != ""){
 			$sql = "SELECT COUNT(*) FROM animal ";
 			if($prikaz != ""){
 				$sql .= $prikaz;
@@ -231,11 +246,15 @@ switch($menu){
 				echo " <a href='{$_SERVER['PHP_SELF']}?menu=1&currentpage=$totalpages'>>></a> ";
 			}
 			$_SESSION["formSubmit"] = "Filter";
-			$_SESSION["type"] = $array;
-		//}
+			if(isset($array)) $_SESSION["type"] = $array;
+			else{ $_SESSION["type"][] = 'all';}
+		}
 	break;
 
-	case 2:?>
+	case 2:
+		unset($_SESSION['formSubmit']);	
+		unset($_SESSION['type']);	
+		?>
 			<p>
 				Božetěchova 2 <br>
 				Brno, Královo Pole <br>
@@ -245,6 +264,8 @@ switch($menu){
 	<?break;
 	
 	case 3:
+		unset($_SESSION['formSubmit']);	
+		unset($_SESSION['type']);	
 		?>
 			<h2>Přihlášení</h2>
 			<table>
@@ -257,6 +278,8 @@ switch($menu){
 	<?break;
 
 	case 4:
+		unset($_SESSION['formSubmit']);	
+		unset($_SESSION['type']);	
 		?>
 		<table>
 		<form method="POST">
@@ -268,11 +291,32 @@ switch($menu){
 	<?break;
 		
 	case 5:
-    		$ID =  test(62); 
-		testik($ID, $conn);
+		unset($_SESSION['formSubmit']);
+		unset($_SESSION['type']);
+		$_SESSION["IDs"] = array();
+		$_SESSION["index"] = 0;
+		$_SESSION["body"] = 0;
+		$i = 0;
+    		while($i < 20){
+			$x = test(62);
+			if(!in_array($x, $_SESSION["IDs"])){
+				$_SESSION["IDs"][$i] = $x;
+				$i++;			
+			}
+			
+			?><script>window.location.href="?menu=10";</script><?
+		}
+		break;
+
+	case 10:
+		unset($_SESSION['formSubmit']);
+		unset($_SESSION['type']);
+		testik($_SESSION["IDs"][$_SESSION["index"]], $conn);
 		break;	
 
 	default:
+		unset($_SESSION['formSubmit']);
+		unset($_SESSION['type']);
 		$_GET["menu"] = 0;
 	break;
 	}

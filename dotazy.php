@@ -39,10 +39,31 @@
 	}
 
 
+	if(isset($_POST["answ"])){
+		if($_POST["hidden_answer"] == $_POST["hidden_success"]) $_SESSION["body"]++;
+		$_SESSION["index"]++;
+		if($_SESSION["index"] > 19){
+			$query = "INSERT INTO test(user_nick, body) VALUES('"
+				.mysql_real_escape_string($_SESSION["user"])."','"
+				.$_SESSION["body"]."')";
+			$result = mysql_query($query, $conn);
+			$_GET["menu"] = 0;
+		}
+	}
 
 
+	if(isset($_POST["konec"])){
+		$query = "INSERT INTO test(user_nick, body) VALUES('"
+			.mysql_real_escape_string($_SESSION["user"])."','"
+			.$_SESSION["body"]."')";
+		$result = mysql_query($query, $conn);
+		$_GET["menu"] = 0;
+	}
 
 
+	if(isset($_POST["type"]) && isset($_SESSION["type"])){
+		unset($array);
+	}
 
 
 
