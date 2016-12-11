@@ -64,6 +64,8 @@ function main($menu, $conn){
 <?
 switch($menu){
 	case 0:
+		unset($_SESSION['filter']);
+		unset($_SESSION['filt']);
 		unset($_SESSION['formSubmit']);
 		unset($_SESSION['type']);
 		?>
@@ -73,7 +75,8 @@ switch($menu){
 	<?break;
 
 	case 1:
-
+	unset($_SESSION['filter']);
+	unset($_SESSION['filt']);
 	$query = "SELECT * FROM animal ";
 	
 	$res = "ah";
@@ -252,6 +255,8 @@ switch($menu){
 	break;
 
 	case 2:
+		unset($_SESSION['filter']);
+		unset($_SESSION['filt']);
 		unset($_SESSION['formSubmit']);	
 		unset($_SESSION['type']);	
 		?>
@@ -264,6 +269,8 @@ switch($menu){
 	<?break;
 	
 	case 3:
+		unset($_SESSION['filter']);
+		unset($_SESSION['filt']);
 		unset($_SESSION['formSubmit']);	
 		unset($_SESSION['type']);	
 		?>
@@ -291,6 +298,8 @@ switch($menu){
 	<?break;
 		
 	case 5:
+		unset($_SESSION['filter']);
+		unset($_SESSION['filt']);
 		unset($_SESSION['formSubmit']);
 		unset($_SESSION['type']);
 		$_SESSION["IDs"] = array();
@@ -309,35 +318,194 @@ switch($menu){
 		break;
 
 	case 6:
-		$query = "SELECT * FROM test";
-		$result = mysql_query($query, $conn);
-		echo "<table>";
-		echo "<tr><td>Uživatel</td><td>Počet bodů</td><td>Datum</td></tr>";
-		while($data = mysql_fetch_assoc($result)){
-			$true = 0;
-			if(isset($_SESSION["user"])){
-				if($data["user_nick"] == $_SESSION["user"]){
-					$true = 1;
+	unset($_SESSION['formSubmit']);
+	unset($_SESSION['type']);
+	$query = "SELECT * FROM test ";
+	
+	$res = "ah";
+	$all = 0;
+	$me = 0;
+	$up = 0;
+	$down = 0;
+	$prikaz = "";
+	if(isset($_POST['filter']) || isset($_SESSION['filter'])){
+		if(isset($_POST['filt']) || isset($_SESSION['filt'])){
+			if(isset($_POST['filter'])) {
+				if(isset($_POST['filt'])){
+					$array = $_POST['filt']; 
+				}
+				else{
+					$array = array();
+					$res = "";				
+				}
+
+			}			
+			else { 
+				$array = $_SESSION['filt']; 
+			}
+			if(in_array('all', $array)){
+				global $res, $all, $prikaz;
+				$res = mysql_query($query, $conn);
+				$all = 1;
+			}
+			else{
+				global $res, $all, $me, $up, $down;
+				if(in_array('me', $array)){
+					$prikaz = " WHERE user_nick='".$_SESSION["user"]."'";
+					$me = 1;
+				}
+				if(in_array('up', $array)){
+					$prikaz .= " ORDER BY body";
+					$up = 1;
+				}
+				if(in_array('down', $array)){
+					$prikaz .= " ORDER BY body DESC";
+					$down = 1;
+				}
+				$all = 0;
+				if($up && $down){
+					$up = 0;
+					$down = 0;
+					$res = "asd";
+					$prikaz = "";
+					if($me){
+						$prikaz = " WHERE user_nick='".$_SESSION["user"]."'";
+					}
+					else{
+						$all = 1;
+					}
+				}
+				else if($all == 0 && $me == 0 && $up == 0 && $down == 0){
+					$res = "";
+				}
+				else{
+					$query .= $prikaz;
+					//echo $query;
+					$res = mysql_query($query, $conn);
 				}
 			}
-			?>
-				<tr>
-				<td><?if($true) echo "<b>"; echo $data["user_nick"];if($true) echo "</b>";?></td>
-				<td><?if($true) echo "<b>"; echo $data["body"];if($true) echo "</b>";?></td>
-				<td><?if($true) echo "<b>"; echo $data["time"];if($true) echo "</b>";?></td>
-				<tr>
-			<?
 		}
-		echo "</table>";
+		else{
+			global $res;
+			$res = "";
+		}
+	
+	}
+	else{
+		global $res, $all;
+		$all = 1;
+		$res = mysql_query($query, $conn);
+	}
+	?>
+
+	<form name="filter" method="POST" >
+	<input type="checkbox" name="filt[]" value="all" <?php if($all == 1) echo "checked"?>> Vše
+  	<input type="checkbox" name="filt[]" value="me" <?php if($me == 1) echo "checked"?>> Moje výsledky
+	<input type="checkbox" name="filt[]" value="up" <?php if($up == 1) echo "checked"?>> Seřadit vzestupně
+	<input type="checkbox" name="filt[]" value="down" <?php if($down == 1) echo "checked"?>> Seřadit sestupně
+	<input type="submit" name="filter" value="Filter"/>
+	</form>
+	
+	<?
+		/*STRÁNKOVÁNÍ*/
+		if($res != ""){
+			$sql = "SELECT COUNT(*) FROM test ";
+			if($prikaz != ""){
+				$sql .= $prikaz;
+			}
+
+			$result = mysql_query($sql, $conn);
+			$r = mysql_fetch_row($result);
+			$numrows = $r[0];
+			$rowsperpage = 10;
+			$totalpages = ceil($numrows / $rowsperpage);
+			if(isset($_GET['currentpage']) && is_numeric($_GET['currentpage'])){
+				$currentpage = (int) $_GET['currentpage'];
+			}
+			else{
+				$currentpage = 1;
+			}
+
+			if($currentpage > $totalpages){
+				$currentpage = $totalpages;
+			}
+			
+			if($currentpage < 1){
+				$currentpage = 1;
+			}
+
+			$offset = ($currentpage - 1) * $rowsperpage;
+			$sql = "SELECT * FROM test ";
+			if($prikaz != ""){
+				$sql .= $prikaz;
+			}
+			$sql .= " LIMIT $offset, $rowsperpage";
+			$result = mysql_query($sql, $conn);
+			?><h2>Statistiky</h2>
+
+
+			<?
+			echo "<table>";
+			echo "<tr><td>Uživatel</td><td>Počet bodů</td><td>Datum</td></tr>";
+			while($data = mysql_fetch_assoc($result)){
+				$true = 0;
+				if(isset($_SESSION["user"])){
+					if($data["user_nick"] == $_SESSION["user"]){
+						$true = 1;
+					}
+				}
+				?>
+					<tr>
+					<td><?if($true) echo "<b>"; echo $data["user_nick"];if($true) echo "</b>";?></td>
+					<td><?if($true) echo "<b>"; echo $data["body"];if($true) echo "</b>";?></td>
+					<td><?if($true) echo "<b>"; echo $data["time"];if($true) echo "</b>";?></td>
+					<tr>
+				<?
+			}
+			echo "</table>";
+
+			$range = 3;
+
+			if($currentpage > 1){
+				$nextpage = $currentpage - 1;
+				echo " <a href='{$_SERVER['PHP_SELF']}?menu=6&currentpage=1'><<</a> ";
+				echo " <a href='{$_SERVER['PHP_SELF']}?menu=6&currentpage=$nextpage'><</a> ";
+			}
+
+			for($x = ($currentpage - $range); $x < (($currentpage + $range) + 1); $x++){
+				if(($x > 0) && ($x <= $totalpages)){
+					if($x == $currentpage){
+						echo " [<b>$x</b>] ";
+					}
+					else{
+						echo " <a href='{$_SERVER['PHP_SELF']}?menu=6&currentpage=$x'>$x</a> ";
+					}
+				}
+			}
+
+			if($currentpage != $totalpages){
+				$nextpage = $currentpage + 1;
+				echo " <a href='{$_SERVER['PHP_SELF']}?menu=6&currentpage=$nextpage'>></a> ";
+				echo " <a href='{$_SERVER['PHP_SELF']}?menu=6&currentpage=$totalpages'>>></a> ";
+			}
+			$_SESSION["filter"] = "Filter";
+			if(isset($array)) $_SESSION["filt"] = $array;
+			else{ $_SESSION["filt"][] = 'all';}
+		}
+		/*STRÁNKOVÁNÍ*/
 		break;
 
 	case 10:
+		unset($_SESSION['filter']);
+		unset($_SESSION['filt']);
 		unset($_SESSION['formSubmit']);
 		unset($_SESSION['type']);
 		testik($_SESSION["IDs"][$_SESSION["index"]], $conn);
 		break;	
 
 	default:
+		unset($_SESSION['filter']);
+		unset($_SESSION['filt']);
 		unset($_SESSION['formSubmit']);
 		unset($_SESSION['type']);
 		$_GET["menu"] = 0;
