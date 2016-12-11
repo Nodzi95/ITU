@@ -3,98 +3,104 @@
   SET time_zone = 'SYSTEM';
   SET sql_mode = 'NO_AUTO_VALUE_ON_ZERO';
 
-
-
-
-
-DROP TABLE IF EXISTS user;
+	DROP TABLE IF EXISTS user;
  	CREATE TABLE user (
     	nick VARCHAR(20),
-	password VARCHAR(20),
+		password VARCHAR(20),
     	PRIMARY KEY (nick) 
   	)ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
 	
 	INSERT INTO `xmolek00`.`user` (`nick`, `password`) VALUES ('martin', 'mm'), ('nodzi', 'nn');
+
+	DROP TABLE IF EXISTS test;
+ 	CREATE TABLE test (
+    	ID int(11) unsigned NOT NULL AUTO_INCREMENT,
+		user_nick VARCHAR(20),
+		body int(11),
+		time datetime DEFAULT CURRENT_TIMESTAMP,
+    	PRIMARY KEY (ID),
+    	CONSTRAINT FOREIGN KEY (user_nick) REFERENCES user(nick) ON DELETE CASCADE ON UPDATE CASCADE
+  	)ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
+
+ 	INSERT INTO test (user_nick, body) VALUES ('nodzi', 15), ('martin', 16), ('nodzi', 12), ('martin', 11);
 
 	DROP TABLE IF EXISTS animal;
  	CREATE TABLE animal (
     	ID int(5) unsigned NOT NULL AUTO_INCREMENT,
     	PRIMARY KEY (ID), 
     	name VARCHAR(20),
-	descriptionCZ VARCHAR(200),
-	descriptionLA VARCHAR(200),
-	picture VARCHAR(100),
-	type VARCHAR(10)
+		descriptionCZ VARCHAR(1000),
+		descriptionLA VARCHAR(200),
+		picture VARCHAR(300),
+		type VARCHAR(10)
   	)ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
 
 
 
-	INSERT INTO animal (type, name, picture) VALUES 
-	('selma', 'norek americkÃ½',  'https://upload.wikimedia.org/wikipedia/commons/0/04/MinkforWiki.jpg'),
-	('selma', 'tchoÅ™ tmavÃ½',  'https://upload.wikimedia.org/wikipedia/commons/2/2e/Mustela_putorius_01-cropped.jpg'),
-	('selma', 'tchoÅ™ stepnÃ­',  'https://upload.wikimedia.org/wikipedia/commons/2/2c/Mustela_eversmannii_2.jpg'),
-	('selma', 'kuna lesnÃ­',  'https://upload.wikimedia.org/wikipedia/commons/f/ff/Martes_martes_crop.jpg'),
-	('selma', 'kuna skalnÃ­',  'https://media.novinky.cz/269/212699-gallery1-px7zk.jpg'),
-	('selma', 'lasice kolÄava',  'https://upload.wikimedia.org/wikipedia/commons/e/e3/Mustela_nivalis_-British_Wildlife_Centre-4.jpg'),
-	('selma', 'lasice hranostaj',  'https://upload.wikimedia.org/wikipedia/commons/7/77/Mustela_Erminea_head.jpg'),
-	('selma', 'jezevec lesnÃ­',  'https://upload.wikimedia.org/wikipedia/commons/9/9e/%27Honey%27_the_badger.jpg'),
-	('selma', 'vydra Å™Ã­ÄnÃ­', 'https://upload.wikimedia.org/wikipedia/commons/8/89/Loutre2.jpg'),
-	('selma', 'medvÄ›d hnÄ›dÃ½',  'https://upload.wikimedia.org/wikipedia/commons/5/59/2_bears_and_salmon.JPG'),
-	('selma', 'mÃ½val severnÃ­',  'https://upload.wikimedia.org/wikipedia/commons/6/66/%2A_Raccoon.jpg'),
-	('selma', 'psÃ­k mÃ½valovitÃ½',  'https://upload.wikimedia.org/wikipedia/commons/9/92/Nyctereutes_procyonoides_16072008.jpg'),
-	('selma', 'liÅ¡ka obecnÃ¡',  'https://upload.wikimedia.org/wikipedia/commons/0/01/Adult_fox.JPG'),
-	('selma', 'vlk obecnÃ½',  'https://upload.wikimedia.org/wikipedia/commons/4/47/Canis_lupus_1_%28Martin_Mecnarowski%29.jpg'),
-	('selma', 'rys ostrovid',  'https://upload.wikimedia.org/wikipedia/commons/3/36/Lodjur_fotograferad_pa_Polar_Zoo_Norge.jpg'),
-	('selma', 'koÄka divokÃ¡',  'http://www.priroda.cz/clanky/foto/bohdal_kocka-divoka-66680.jpg'),
-	('sudo', 'prase divokÃ©',  'https://upload.wikimedia.org/wikipedia/commons/c/c0/A_young_wild_boar_in_his_environment.jpg'),
-	('sudo', 'jelen lesnÃ­',  'https://upload.wikimedia.org/wikipedia/commons/7/75/Cervus_elaphus_Luc_Viatour_3.jpg'),
-	('sudo', 'danÄ›k evropskÃ½',  'https://upload.wikimedia.org/wikipedia/commons/8/8c/Daino_maschio.JPG'),
-	('sudo', 'jelen sika',  'https://upload.wikimedia.org/wikipedia/commons/f/f6/Cervus_nippon_002.jpg'),
-	('sudo', 'jelenec bÄ›loocasÃ½',  'http://calphotos.berkeley.edu/imgs/512x768/0000_0000/0708/0115.jpeg'),
-	('sudo', 'srnec obecnÃ½',  'https://upload.wikimedia.org/wikipedia/commons/5/5d/Capreolus_capreolus_%28Marek_Szczepanek%29.jpg'),
-	('sudo', 'los evropskÃ½',  'https://upload.wikimedia.org/wikipedia/commons/b/be/Moose_983_LAB.jpg'),
-	('sudo', 'kamzÃ­k horskÃ½',  'https://upload.wikimedia.org/wikipedia/commons/e/eb/Gaemsen_nebelhorn_20081015.jpg'),
-	('sudo', 'muflon',  'https://upload.wikimedia.org/wikipedia/commons/1/1c/Ovis_musimon_trebon_brewery.jpg'),
-	('sudo', 'paovce hÅ™ivnatÃ¡',  'http://www.theonlinezoo.com/img/09/toz09164s.jpg'),
-	('zajici', 'zajÃ­c polnÃ­',  'https://upload.wikimedia.org/wikipedia/commons/e/ea/01-sfel-08-009a.jpg'),
-	('zajici', 'krÃ¡lÃ­k divokÃ½',  'https://upload.wikimedia.org/wikipedia/commons/f/fd/Katoenstaartkonijn_3.jpg'),
-	('hlodavci', 'veverka obecnÃ¡',  'https://upload.wikimedia.org/wikipedia/commons/0/0c/2013_-_Sciurus_vulgaris_-_01.jpg'),
-	('hlodavci', 'sysel obecnÃ½',  'https://upload.wikimedia.org/wikipedia/commons/6/6e/Susel_moregowany2.jpg'),
-	('hlodavci', 'bobr evropskÃ½',  'https://upload.wikimedia.org/wikipedia/commons/c/cc/Beaver_pho34.jpg'),
-	('hlodavci', 'nutrie Å™Ã­ÄnÃ­',  'https://upload.wikimedia.org/wikipedia/commons/c/cc/Beaver_pho34.jpg'),
-	('hlodavci', 'kÅ™eÄek polnÃ­',  'https://upload.wikimedia.org/wikipedia/commons/3/35/Cricetus_cricetus_01.jpg'),
-	('hlodavci', 'nornÃ­k rudÃ½',  'https://upload.wikimedia.org/wikipedia/commons/d/d2/Skogssorken_%28Myodes_glareolus%29.JPG'),
-	('hlodavci', 'hryzec vodnÃ­',  'https://upload.wikimedia.org/wikipedia/commons/c/c2/Arvicola-terrestris.jpg'),
-	('hlodavci', 'ondatra piÅ¾movÃ¡',  'https://upload.wikimedia.org/wikipedia/commons/0/00/Muskrat_swimming_Ottawa.jpg'),
-	('hlodavci', 'hraboÅ¡ polnÃ­',  'https://upload.wikimedia.org/wikipedia/commons/1/10/Feldmaus_Microtus_arvalis.jpg'),
-	('hlodavci', 'hraboÅ¡ mokÅ™adnÃ­',  'http://www.hlasek.com/foto/microtus_agrestis_bt3363.jpg'),
-	('hlodavci', 'hraboÅ¡Ã­k podzemnÃ­',  'http://www.biolib.cz/IMG/GAL/274586.jpg'),
-	('hlodavci', 'krysa obecnÃ¡',  'http://www.naturfoto.cz/fotografie/andera/krysa-obecna-3791.jpg'),
-	('hlodavci', 'potkan',  'https://upload.wikimedia.org/wikipedia/commons/1/10/Co-swand-09-12.jpg'),
-	('hlodavci', 'myÅ¡ domÃ¡cÃ­',  'https://upload.wikimedia.org/wikipedia/commons/a/ab/House_mouse.jpg'),
-	('hlodavci', 'myÅ¡ka drobnÃ¡',  'https://upload.wikimedia.org/wikipedia/commons/a/a3/Harvest_mouse1.jpg'),
-	('hlodavci', 'myÅ¡ice temnopÃ¡sÃ¡',  'https://upload.wikimedia.org/wikipedia/commons/0/01/Brandmaus.jpg'),
-	('hlodavci', 'myÅ¡ivka horskÃ¡',  'https://upload.wikimedia.org/wikipedia/commons/8/8b/Sicista_betulina_02.JPG'),
-	('hlodavci', 'myÅ¡ice lesnÃ­',  'https://upload.wikimedia.org/wikipedia/commons/4/41/Apodemus_flavicollis_%28Ratiborice%29.jpg'),
-	('hlodavci', 'myÅ¡ice kÅ™ovinnÃ¡',  'https://upload.wikimedia.org/wikipedia/commons/b/bd/Apodemus_sylvaticus_bosmuis.jpg'),
-	('hlodavci', 'myÅ¡ice malookÃ¡',  'https://upload.wikimedia.org/wikipedia/commons/6/62/Apodemus_uralensis_3.jpg'),
-	('hlodavci', 'plch velkÃ½',  'https://upload.wikimedia.org/wikipedia/commons/0/0b/Siebenschlaefer_glis_glis.jpg'),
-	('hlodavci', 'plÅ¡Ã­k liskovÃ½', 'https://upload.wikimedia.org/wikipedia/commons/1/13/Haselmaus.JPG'),
-	('hlodavci', 'plch zahradnÃ­',  'https://upload.wikimedia.org/wikipedia/commons/1/12/Eliomys_quercinus01.jpg'),
-	('hlodavci', 'plch lesnÃ­',  'https://upload.wikimedia.org/wikipedia/commons/4/45/Dryomys_nitedula.jpg'),
-	('hmyz', 'jeÅ¾ek vÃ½chodnÃ­',  'https://upload.wikimedia.org/wikipedia/commons/5/59/2008_Hedgehog_1020932.jpg'),
-	('hmyz', 'jeÅ¾ek zÃ¡padnÃ­',  'https://upload.wikimedia.org/wikipedia/commons/c/cb/Erinaceus_europaeus_%28Linnaeus%2C_1758%29.jpg'),
-	('hmyz', 'rejsec ÄernÃ½',  'https://upload.wikimedia.org/wikipedia/commons/3/32/Neomys_anomalus_01_by-dpc.jpg'),
-	('hmyz', 'rejsec vodnÃ­',  'https://upload.wikimedia.org/wikipedia/commons/9/98/Neomys_fodiens_TF_090829.jpg'),
-	('hmyz', 'rejsek obecnÃ½',  'https://upload.wikimedia.org/wikipedia/commons/c/cf/SorexAraneus_wwalas_02.JPG'),
-	('hmyz', 'rejsek malÃ½',  'https://upload.wikimedia.org/wikipedia/commons/a/ae/Sorex_minutus.jpg'),
-	('hmyz', 'bÄ›lozubka bÄ›lobÅ™ichÃ¡',  'https://upload.wikimedia.org/wikipedia/commons/1/10/Crocidura_leucodon-1.jpg'),
-	('hmyz', 'bÄ›lozubka Å¡edÃ¡',  'https://upload.wikimedia.org/wikipedia/commons/9/95/Gartenspitzmaus.jpg'),
-	('hmyz', 'krtek obecnÃ½',  'https://upload.wikimedia.org/wikipedia/commons/8/80/Close-up_of_mole.jpg'),
-	('primat', 'ÄlovÄ›k moudrÃ½',  'http://www.gamepark.cz/pictures/00/17/24/172453.jpg')
+	INSERT INTO animal (type, descriptionCZ, name, picture) VALUES 
+	('selma', 'Norek americkı má dlouhé, štíhlé tìlo s krátkımi nohami, co mu umoòuje vlézt do nory za koøistí. Tento tvar tìla také pomáhá sníit odpor vody pøi plavání. Lebka norka amerického je podobná lebce norka evropského, ale je masivnìjší, uší a ménì protáhlá.', 'norek americkı',  'https://upload.wikimedia.org/wikipedia/commons/0/04/MinkforWiki.jpg'),
+	('selma', 'Je velikostí øazen mezi kunu a lasici, tedy menší šelma, dlouhá od 33 do 44 cm s ocasem 10–18 cm. Váí zhruba 1 kg. Díky bílé barvì na stranách hlavy oproti ostatní hnìdé srsti je snadno odlišitelnı od podobnıch tvorù', 'tchoø tmavı',  'https://upload.wikimedia.org/wikipedia/commons/2/2e/Mustela_putorius_01-cropped.jpg'),
+	('selma', 'Má svìtlé, pøevánì lutavé zbarvení, které je patrné zejména na høbetì a bocích. Oproti tomu jsou konèetiny zahaleny do tmavého závoje koichu. Asi dvanácticentimetrovı ocas je napùl svìtlı a na konci pøechází v tmavou barvu. Okraje boltcù a oblast kolem èenichu jsou bìlavé. Délka ocasu je 12-17 cm. Váí necelı jeden kilogram.', 'tchoø stepní',  'https://upload.wikimedia.org/wikipedia/commons/2/2c/Mustela_eversmannii_2.jpg'),
+	('selma', 'Kuna lesní je štíhlá, na lasicovitou dlouhonohá šelma s dlouhım huòatım ocasem a svìtle hnìdì, èokoládovì a èernì zbarvenou srstí. Pøední i zadní konèetiny má vyzbrojeny ostrımi drápy, tlamu zase ostrımi zoubky vhodnımi k rychlému usmrcení koøisti.', 'kuna lesní',  'https://upload.wikimedia.org/wikipedia/commons/f/ff/Martes_martes_crop.jpg'),
+	('selma', 'Kuna skalní má dlouhé štíhlé tìlo s hedvábnou srstí a bílou náprsenkou. Dorùstá délky 30-50 cm, z toho ocas dosahuje délky a 20 cm a váhy a 2,3 kg. Doívá se 10 a 12 let. Polštáøky na tlapkách nemá pokryté srstí.', 'kuna skalní',  'https://media.novinky.cz/269/212699-gallery1-px7zk.jpg'),
+	('selma', 'Lasice kolèavy dosahují velikosti 155-260 mm a hmotnosti 30-160 g. Velikost tìla je velmi rùznorodá, samice jsou však vdy menší. Srst je zbarvena mléènìhnìdì a rezavohnìdì s bìlavou náprsenkou a spodní stranou tìla. Na ocase se (na rozdíl od hranostaje) nenachází èerná špièka. V ÈR se na zimu nepøebarvuje, jen zesvìtlá.', 'lasice kolèava',  'https://upload.wikimedia.org/wikipedia/commons/e/e3/Mustela_nivalis_-British_Wildlife_Centre-4.jpg'),
+	('selma', 'Jedná se o malou šelmu s protáhlım tìlem a krátkımi konèetinami. Dorùstá délky 24 a 29 cm (délka ocasu okolo 9 cm) a dosahuje váhy 140 a 350 g. Samci jsou vıraznì vìtší ne samice. Zbarvení hranostaje je v létì hnìdé (zahrnuje pomìrnì rozsáhlou škálu od svìtle a po tmavì hnìdou barvu) s bílım bøichem, které v zimì nahrazuje hustší èistì bílı koich.', 'lasice hranostaj',  'https://upload.wikimedia.org/wikipedia/commons/7/77/Mustela_Erminea_head.jpg'),
+	('selma', 'Na území ÈR je jezevec nejvìtší lasicovitou šelmou, váí 10 a 20 kg, dlouhı je a 85 cm a s ocasem má metr. V porovnání s ostatními lasicovitımi šelmami má jezevec zcela odlišnı tvar tìla, zavalitou postavu. Má témìø bílou hlavu, jen pøes oèi má široké èerné pruhy. Srst je lutošedá s èernımi a bílımi konci, hrubá a štìtinatá.', 'jezevec lesní',  'https://upload.wikimedia.org/wikipedia/commons/9/9e/%27Honey%27_the_badger.jpg'),
+	('selma', 'Vydra øíèní je velká lasicovitá šelma s protáhlım, štíhlım tìlem, krátkımi konèetinami s plovacími blánami a svalnatım, zuujícím se ocasem. Má krátkou svìtle a tmavì hnìdou srst s bílou spodinou. Pøítomnost vydry øíèní mùeme zaznamenat i podle trusu protáhlého tvaru se zbytky rybích šupin nebo kùstek.', 'vydra øíèní', 'https://upload.wikimedia.org/wikipedia/commons/8/89/Loutre2.jpg'),
+	('selma', 'Medvìd hnìdı je mohutná šelma se silnımi konèetinami s velkımi, a 15 cm dlouhımi drápy, dlouhou srstí a velkou kulatou hlavou. Zbarvení srsti se znaènì liší podle nìkolika poddruhù, ale všeobecnì se pohybuje od lutavì plavé a po tmavì èernou. Mnozí jedinci mají navíc bílı nebo støíbøitı odstín srsti, co má za následek prošedivìlı vzhled. Ani velikost není pevnì stanovena a kolísá u jednotlivıch populací podle mnoství dostupné potravy. Nejmenším poddruhem je pøitom medvìd syrskı a nejvìtším medvìd kodiak.', 'medvìd hnìdı',  'https://upload.wikimedia.org/wikipedia/commons/5/59/2_bears_and_salmon.JPG'),
+	('selma', 'S velikostí 41 – 72 cm a hmotností mezi 3,6 – 9 kg je mıval nejvìtším zástupcem èeledi medvídkovití. Celı je porostlı hustou, šedou srstí, mezi jeho charakteristické znaky patøí vırazná èerná oblièejová maska a tmavì pruhovanı ocas. Patøí mezi všeravce a obvykle je aktivní v noci; jeho strava je z 40 % tvoøena bezobratlımi, 33 % zaujímá rostlinná sloka a zbıvajících 27 % obratlovci.', 'mıval severní',  'https://upload.wikimedia.org/wikipedia/commons/6/66/%2A_Raccoon.jpg'),
+	('selma', 'Psík mıvalovitı je robustní, nízkonohé zvíøe, pøipomínající spíš mıvala nebo jezevce ne psovitou šelmu. Délka tìla dospìlıch jedincù dosahuje 50–70 cm, vıška v kohoutku však nepøesahuje 25 cm. Hmotnost se pohybuje v rozmezí 4–10 kg. Ocas je oproti jinım psovitım šelmám krátkı (15–25 cm), ale velmi huòatı. Jeho srst je dlouhá, huòatá, hnìdá a šedì nazrzlá.', 'psík mıvalovitı',  'https://upload.wikimedia.org/wikipedia/commons/9/92/Nyctereutes_procyonoides_16072008.jpg'),
+	('selma', 'Liška je relativnì štíhlá psovitá šelma s pomìrnì dlouhıma špièatıma ušima a dlouhım huòatım ocasem. Stavbou tìla a lebky se liška jen málo liší od slabšího psa. Tìlo je 100 a 140 cm dlouhé vèetnì oháòky a v kohoutku 30 a 40 cm vysoké. Oháòka mìøí 35 a 45 cm. Tìlesná váha znaènì kolísá, udává se rozpìtí 4 a 10 kg, vıjimeènì mùe pøesáhnout i 12 kg.', 'liška obecná',  'https://upload.wikimedia.org/wikipedia/commons/0/01/Adult_fox.JPG'),
+	('selma', 'Vlci dosahují hmotnosti 16 a 80 kg. ijí ve smeèkách tvoøenıch obvykle vedoucím alfa párem a nìkolika jejich potomky. iví se rùznorodou koøistí od hmyzu a po bizony a pimonì. Jejich nepøáteli jsou kromì èlovìka také tygøi a medvìdi.', 'vlk obecnı',  'https://upload.wikimedia.org/wikipedia/commons/4/47/Canis_lupus_1_%28Martin_Mecnarowski%29.jpg'),
+	('selma', 'Rys ostrovid je nejvìtší evropskou koèkovitou šelmou, s délkou tìla a 120 cm, délkou ocasu a 25 cm, vıškou v kohoutku a 70 cm a hmotností a 35 kg (pouze samci, samice jsou menší). Charakteristickım znakem všech rysù jsou trojúhelníkovité uši s èernımi chomáèky chlupù na konci (tzv. chvostky) a èernı konec ocasu, mnoho jedincù má lícní chlupy prodlouené a utváøející licousy.', 'rys ostrovid',  'https://upload.wikimedia.org/wikipedia/commons/3/36/Lodjur_fotograferad_pa_Polar_Zoo_Norge.jpg'),
+	('selma', 'Koèka divoká mùe váit 1,2–11 kg a dosáhnout délky 47–80 cm. Má na první pohled zavalitìjší postavu ne koèka domácí, zejména díky delší a hustìjší srsti; tento rozdíl je nejvíce patrnı v zimì. Koèka divoká má také vìtší hlavu s dlouhımi vousky a menšíma ušima. Je zbarvena šedohnìdì a šedolutì, s vıraznım pruhováním na høbetu, ocase a nohách. Na høbetu je vıraznı tmavı pás, zatímco bøicho bıvá krémovì luté.', 'koèka divoká',  'http://www.priroda.cz/clanky/foto/bohdal_kocka-divoka-66680.jpg'),
+	('sudo', 'Prase divoké je velkı sudokopytník. Dospìlí samci dorùstají délky 120 – 180 cm a v kohoutku mìøí 55 – 100 cm. Jejich hmotnost je znaènì rùznorodá a v jednotlivıch oblastech se viditelnì liší, v prùmìru však èiní 50 – 90 kg.', 'prase divoké',  'https://upload.wikimedia.org/wikipedia/commons/c/c0/A_young_wild_boar_in_his_environment.jpg'),
+	('sudo', 'Jelen evropskı patøí mezi nejvìtší (nejmohutnìjší) zástupce své èeledi. Samci dorùstají 175–230 cm a jejich hmotnost se pohybuje mezi 160–240 kg. Samice jsou oproti samcùm znaènì menší, dorùstají 160–210 cm a dosahují hmotnosti mezi 120–170 kg. Ocas pøitom mìøí 12–19 mm a v kohoutku dosahují vıšky 120 a 150 cm.', 'jelen lesní',  'https://upload.wikimedia.org/wikipedia/commons/7/75/Cervus_elaphus_Luc_Viatour_3.jpg'),
+	('sudo', 'Kohoutková vıška u samcù se pohybuje mezi 85 a 110 cm, u samic 75 a 90 cm. Bez kelky (ocasu) dosahují délky 130 a 175 cm (samice 115 a 140 cm), ocas pak mìøí 18 – 27 cm. Hmotnost samcù je 40 a 95 kg, samic 25 a 50 kg.', 'danìk evropskı',  'https://upload.wikimedia.org/wikipedia/commons/8/8c/Daino_maschio.JPG'),
+	('sudo', 'Oproti jelenu lesnímu je sika vıraznì menší a lehèí. Dospìlı samec v kohoutku dosahuje maximální vıšky 120 centimetrù, tìlesná hmotnost se pohybuje podle poddruhu od 35 kg (sika vietnamskı) do 140 kg (sika Dybowského). Letní zbarvení sikù je pestré, rezavohnìdé s bílımi skvrnami (podobnì jako u daòka), zimní srst je delší, dosti hrubá, šedohnìdá a èokoládovì hnìdá, s nevıraznımi skvrnami.', 'jelen sika',  'https://upload.wikimedia.org/wikipedia/commons/f/f6/Cervus_nippon_002.jpg'),
+	('sudo', 'Samci obvykle váí 50-100 kg, ale vzácnì, hlavnì v Americe byly zaznamenány kusy, které pøesahovaly 159 kg. Samice obvykle dosahují váhy 40–90 kg, ale byly zdokumentovány kusy, které dosahovaly a 105 kg. Délka se pohybuje od 160 do 220 cm vèetnì ocasu a vıška v kohoutku od 80 do 100 cm.', 'jelenec bìloocası',  'http://calphotos.berkeley.edu/imgs/512x768/0000_0000/0708/0115.jpeg'),
+	('sudo', 'Srnec obecnı je relativnì malım zástupcem své èeledi. Dosahuje hmotnosti mezi 15–35 kg a v kohoutku mìøí 65–75 cm. Ocas je velmi krátkı (2–3 cm) a sotva viditelnı. Pøes léto má jeho srst a mírnì rezavo-èervenı odstín, s koncem roku však narùstá nová zimní srst a její zbarvení znatelnì tmavne (srnèí zvìø pøebarvuje). Samci mají relativnì krátké parùky, které mohou u jedincù v dobrıch podmínkách dorùstat a do délky 25 cm.', 'srnec obecnı',  'https://upload.wikimedia.org/wikipedia/commons/5/5d/Capreolus_capreolus_%28Marek_Szczepanek%29.jpg'),
+	('sudo', 'Losi mají šedohnìdou a èernou srst, na krku jim vyrùstá høíva. Velká protáhlá hlava je zakonèena silnım pøeènívajícím horním pyskem. Losi jsou dobøe vybaveni pro pohyb v mìkké pùdì. Jejich nohy vybavené roztaitelnımi spárky mají velkou našlapovací plochu. Mohou se pohybovat i rychlostí 50 km/h.', 'los evropskı',  'https://upload.wikimedia.org/wikipedia/commons/b/be/Moose_983_LAB.jpg'),
+	('sudo', 'Kamzík horskı je pùvabná zvìø, elegantní a plná energie a síly, co jsou rysy potøebné v horském prostøedí. Jeho vıška v kohoutku èiní 0,70 - 0,85 m, délka tìla 1 - 1,30 m, váha 11 - 36 kg, ocas 3 - 8 cm a lebka 18,3 - 22 cm.', 'kamzík horskı',  'https://upload.wikimedia.org/wikipedia/commons/e/eb/Gaemsen_nebelhorn_20081015.jpg'),
+	('sudo', 'Muflon mùe bıt dlouhı 100 a 125cm, v kohoutku dosahuje vıšky a 75 cm. Ocas mìøí 10 cm. Starší berani dosahují váhy 50 kg, ovce kolem 35 kg. Mufloní zvìø má na hlavì rohy, myslivecky oznaèované jako toulce. Mufloní toulce se liší od paroí jelenovitıch tím, e jsou duté, nevìtvené, zvìø je neshazuje, a také svım pùvodem.', 'muflon',  'https://upload.wikimedia.org/wikipedia/commons/1/1c/Ovis_musimon_trebon_brewery.jpg'),
+	('sudo', 'Paovce høivnatá má vıšku, po ramena, 80 a 100 cm a váí 40 a 140 kg. Má píseènì hnìdou barvu, která s vìkem tmavne, svìtlejší slabiny a tmavší pruh na zádech.', 'paovce høivnatá',  'http://www.theonlinezoo.com/img/09/toz09164s.jpg'),
+	('zajici', 'Zajíc polní dorùstá délky 50 – 70 cm a dosahuje hmotnosti mezi 2,5 - 6,5 kg. Je velmi zdatnım bìcem, bìhá bìnì 40 km/h a v nebezpeèí a 74 km/h a dobøe klièkuje. Protoe má pøední nohy oproti zadním pomìrnì krátké, je rychlejší pøi bìhu do kopce, ne dolù. Pøi prudkém úprku z kopce dolù nìkdy klopıtá a dokonce dìlá kotrmelce! Vıbornì skáèe do vıšky pøes 1 m a do dálky a 6 m. ', 'zajíc polní',  'https://upload.wikimedia.org/wikipedia/commons/e/ea/01-sfel-08-009a.jpg'),
+	('zajici', 'Králík divokı dosahuje délky tìla 40-50 cm, ocásek mìøí asi 6 cm, hmotnost se pohybuje od 1,3 do 2,5 kg. Postavou se podobá zajíci, je však asi o polovinu menší, má kratší uši i konèetiny. Nepomìr mezi délkou pøedních a zadních konèetin není tak vıraznı jako u zajíce a pøední konèetiny jsou silnìjší. Uši králíka mìøí 6-8 cm a pokud ucho pøehneme, nepøesahuje èumák králíka. ', 'králík divokı',  'https://upload.wikimedia.org/wikipedia/commons/f/fd/Katoenstaartkonijn_3.jpg'),
+	('hlodavci', 'Veverka obecná obvykle dorùstá 19 a 23 cm a dosahuje hmotnosti mezi 250 a 340 g. Huòatı ocas, kterı napomáhá udrovat rovnováhu pøi lezení a skocích na stromech a kterı veverka vyuívá jako „pokrıvku“ tìla pøi spánku, je 14,5 a 20 cm dlouhı.', 'veverka obecná',  'https://upload.wikimedia.org/wikipedia/commons/0/0c/2013_-_Sciurus_vulgaris_-_01.jpg'),
+	('hlodavci', 'Sysel dorùstá délky okolo 20 centimetrù a dosahuje váhy 200-400 gramù. Má hustı, hnìdavı, pøiléhavı koich. Sysel má velké oèi, malé ušní boltce a krátkı ocas. Ètyøprsté pøední konèetiny jsou o hodnì kratší ne zadní.', 'sysel obecnı',  'https://upload.wikimedia.org/wikipedia/commons/6/6e/Susel_moregowany2.jpg'),
+	('hlodavci', 'Bobr evropskı dosahuje hmotnosti a 30 kg. Po jihoamerické kapybaøe je druhım nejvìtším hlodavcem. Tìlo je porostlé velmi hustou èernohnìdou srstí o hustotì a 300 chlupù na mm2. Je dokonale pøizpùsoben ivotu ve vodì díky plovacím blanám, které jsou na zadních konèetinách, a uzavíratelnım nozdrám. Uzavøít mùe také tlamu ihned za øezáky, co umoòuje vyuití zubù jako nástrojù i ve vodì.', 'bobr evropskı',  'https://upload.wikimedia.org/wikipedia/commons/c/cc/Beaver_pho34.jpg'),
+	('hlodavci', 'Velikostnì se nutrie nacházejí pøiblinì mezi ondatrou a bobrem - tìlo dospìlé nutrie je dlouhé 40-70 cm, ocas je dlouhı 30-45 cm. Dospìlé nutrie váí obvykle 5-6 kg, dobøe ivenı alfa samec mùe dosáhnout 10 kg, samec vykrmenı v zajetí a 12 kg.', 'nutrie øíèní',  'http://www.chovzvirat.cz/images/zvirata/nutrie-ricni_ezs67ln.jpg'),
+	('hlodavci', 'Køeèek polní je vıraznì vìtší, ne køeèek zlatı chovanı jako domácí mazlíèek, jeho váha dosahuje 150–600 g, délka 215–340 mm. Má zavalitìjší tìlo, krátké konèetiny a kratièkı, øídce osrstìnı ocas. Má pestré zbarvení. Na høbetì mívá lutohnìdı a rezavì hnìdı pruh s naèernalımi konci delších chlupù, na bøiše bıvá naopak tmavohnìdı a èernı.', 'køeèek polní',  'https://upload.wikimedia.org/wikipedia/commons/3/35/Cricetus_cricetus_01.jpg'),
+	('hlodavci', 'Má typickı tupı èenich. Barva srsti na horní èásti tìla je velmi variabilní, lutohnìdá, rudohnìdá i hnìdá. Boky jsou šedé a zadek šedobílı, nohy mají bílou barvu. Na konci ocasu má slabı chomáèek srsti. Dorùstá velikosti 7 – 13,5 cm a ocas má dlouhı 7 – 11 cm. Jejich obvyklá hmotnost se pohybuje mezi 10 – 36 gramy.', 'norník rudı',  'https://upload.wikimedia.org/wikipedia/commons/d/d2/Skogssorken_%28Myodes_glareolus%29.JPG'),
+	('hlodavci', 'Je a 19 cm dlouhı a vzhledem pøipomíná potkana. Má zpravidla tmavohnìdou barvu srsti. Délka tìla: 140 – 220 mm, délka ocasu: 95 – 140 mm, hmotnost: 150 - 300 g', 'hryzec vodní',  'https://upload.wikimedia.org/wikipedia/commons/c/c2/Arvicola-terrestris.jpg'),
+	('hlodavci', 'Je velká pøiblinì 30 cm, mùe ale dorùstat mnohem vìtších rozmìrù. Na høbetu je hnìdá, zespoda šedá. Ocas je dlouhı a zploštìlı, pouívanı pøi plování jako kormidlo. Poblí pohlavních orgánù má lázu, ze které vyluèuje pimo, proto se jí pøezdívá i pimovka.', 'ondatra pimová',  'https://upload.wikimedia.org/wikipedia/commons/0/00/Muskrat_swimming_Ottawa.jpg'),
+	('hlodavci', 'Velikost je pøiblinì mezi 8 a 12 centimetry, ocas je dlouhı a 3 centimetry; samec bıvá vìtší ne samice a dosahuje váhy a 50 gramù. Od myši se liší hlavnì krátkım ocasem, robustnìjší stavbou tìla a zaoblenım èenichem. Hraboš má malé a pomìrnì skryté ušní boltce. Srst zbarvena od hnìdé a po šedou, bøišní strana bıvá svìtlejší.', 'hraboš polní',  'https://upload.wikimedia.org/wikipedia/commons/1/10/Feldmaus_Microtus_arvalis.jpg'),
+	('hlodavci', 'Jeho tìlo je dlouhé 9 a 14 cm a ocas 3 a 5 cm, váí 20 a 30 g. Nejblíe podobnım tvorem, ijícím v èeské pøírodì, je hraboš polní, od kterého se odlišuje na prvı pohled málo zøetelnımi znaky.', 'hraboš mokøadní',  'http://www.hlasek.com/foto/microtus_agrestis_bt3363.jpg'),
+	('hlodavci', 'Nejmenší z našich hrabošù. Vyznaèuje se krátkım ocasem, drobnıma oèima velikosti špendlíkové hlavièky (v prùmìru 1-2 mm) a krátkımi blanitımi boltci (témìø se skrıvají v srsti), je jsou øídce ochlupené jen pøi vnìjším okraji. Dobrım rozpoznávacím znakem je i délka zadní tlapky pod 15,5 mm, na chodidlech navíc najdeme obvykle 5 mozolù (u ostatních našich hrabošù vyjma hryzce jich bıvá 6).', 'hrabošík podzemní',  'http://www.biolib.cz/IMG/GAL/274586.jpg'),
+	('hlodavci', 'Krysa obecná je typickı myšovitı hlodavec. Je dlouhá 160–235 mm, její ocas mìøí 185–255 mm a je na nìm 220–290 okrouhlıch rohovitıch prstencù (kroukù). Velikost zadních tlapek èiní 29–40 mm, uši mají 22–26,5 mm. Váí 130–250 g.', 'krysa obecná',  'http://www.naturfoto.cz/fotografie/andera/krysa-obecna-3791.jpg'),
+	('hlodavci', 'Potkan je støednì vìtší myšovitı hlodavec. Délka tìla bıvá v rozmezí 160–270 mm, ocas je kratší ne tìlo a mìøí 130–200 mm. Velikost zadních tlapek èiní 30–45 mm, uši mají 18–22 mm. Dosahuje hmotnosti 140-500 g, v zajetí a do 900 g. Samci jsou robustnìjší, samice bıvají a o 1/3 menší.', 'potkan',  'https://upload.wikimedia.org/wikipedia/commons/1/10/Co-swand-09-12.jpg'),
+	('hlodavci', 'Myši se od myšic liší menšími ušními boltci, kratšími zadními chodidly a rovnì zbarvením. U myši domácí pøevauje na høbetì tmavošedı, šedohnìdı nebo lutı odstín, kterı pozvolna pøechází v šedé nebo lutošedé bøicho bez vıraznìjší hranice na bocích. Ocas je dosti dlouhı, jednobarevnı a mnohem nápadnìji šupinkatı ne u myšic, navíc jeho pokoku nejde snadno stáhnout. ', 'myš domácí',  'https://upload.wikimedia.org/wikipedia/commons/a/ab/House_mouse.jpg'),
+	('hlodavci', 'Myška drobná má lutohnìdou barvu srsti, na bøiše pøechází v bílou. Nìkdy má srst i rezavou. V zimì pøechází barva srsti v tmavší naèervenalı odstín. Myška má velmi malé ušní boltce a tupì zakonèenı èenich s lutım zbarvením. Dále má velmi øídce ochlupenı a velmi pohyblivı chápavı ocas,', 'myška drobná',  'https://upload.wikimedia.org/wikipedia/commons/a/a3/Harvest_mouse1.jpg'),
+	('hlodavci', 'Svrchní strana tìla myšice temnopásé je rezavì hnìdá a lutohnìdá. Bøicho má vıraznì svìtlé – šedohnìdé a do bíla. Délka tìla je 70–125 mm, ocas má o trochu kratší ne tìlo. Váí 15–40 g.', 'myšice temnopásá',  'https://upload.wikimedia.org/wikipedia/commons/0/01/Brandmaus.jpg'),
+	('hlodavci', 'Délka tìla dosahuje 5 a 7 cm, hmotnost 5 a 13 g. Ocásek je témìø o polovinu delší ne tìlíèko. Myšivka je na první pohled nápadná tmavım podélnım pruhem od špièky ocásku a po oèi. Srst je jinak zbarvena okrovì, na bøíšku šedavì. Zadní konèetiny jsou mohutnìji vyvinuté ne pøední (ne však tak vıraznì jako u tarbíkù) a mají pìt prstù. Na pøedních konèetinách jsou prsty pouze ètyøi.', 'myšivka horská',  'https://upload.wikimedia.org/wikipedia/commons/8/8b/Sicista_betulina_02.JPG'),
+	('hlodavci', 'Tato statnìjší myšice je dlouhá 90–123 mm, ocas má stejnì dlouhı jako tìlo. Váí 18–45 g. Zaujmou na ní vıraznì velké oèi – pøipadá na nì 0,52 % váhy celého tìla (u myši domácí jen 0,13 %). Je dvoubarevná, høbet má rezavì hnìdı, bøicho bìlavé. Èasto mívá vıraznì lutou skvrnu na hrdle.', 'myšice lesní',  'https://upload.wikimedia.org/wikipedia/commons/4/41/Apodemus_flavicollis_%28Ratiborice%29.jpg'),
+	('hlodavci', 'Tato myšice váí 13-38 g. Dosahuje délky tìla 75–110 mm; ocas je o nìco kratší (70–105 mm). Je na nìm 150–180 rohovinovıch kroukù. Má velké ušní boltce, šedohnìdı, lehce nahnìdlı koíšek, na bøiše špinavì bílı, pøièem hranice pøechodu barev mezi boky a bøichem není ostrá.', 'myšice køovinná',  'https://upload.wikimedia.org/wikipedia/commons/b/bd/Apodemus_sylvaticus_bosmuis.jpg'),
+	('hlodavci', 'Myšice malooká je dlouhá 70–96 mm, starší údaje udávají 75–100 mm. Ocas má vdy kratší ne tìlo (62–95 mm). Svrchu je šedohnìdá a hnìdá, zespodu bìlavá, pøièem hranice barev na bocích je u dospìlıch jedincù obvykle pomìrnì ostrá. Jedná se o to nejmenší myšici ijící v Èesku, váí 12–22 g. Velikost tlapek èiní 17–20,5 mm, uši mají 13–15 mm.', 'myšice malooká',  'https://upload.wikimedia.org/wikipedia/commons/6/62/Apodemus_uralensis_3.jpg'),
+	('hlodavci', 'Dosahuje takøka velikosti veverky. Svrchní strana støíbrnì lesklá, šedohnìdá, spodní strana bílá, ostøe oddìlena. Uši malé, kulaté a velké oèi, tmavì olemované. Ocas protáhle huòatı.', 'plch velkı',  'https://upload.wikimedia.org/wikipedia/commons/0/0b/Siebenschlaefer_glis_glis.jpg'),
+	('hlodavci', 'Jde o malého zástupce plchù, dorùstá sotva 6 – 9 cm. Vzhledem k pomìru tìla má velmi dlouhı huòatı ocas (5,7 - 7,5 cm), kterı se v pøípadì nebezpeèí (plšíka chytí predátor za ocas), mùe ztáhnout z kùe. Váí 17 - 20 g, tìsnì pøed hibernací se však jeho hmotnost pohybuje mezi 30 - 40 g. Vıbornı lezec a skokan. Je oranovolutého zbarvení s ponìkud svìtlejší spodinou tìla. ', 'plšík liskovı', 'https://upload.wikimedia.org/wikipedia/commons/1/13/Haselmaus.JPG'),
+	('hlodavci', 'Délka tìla 110-120 mm, délka ocasu 100 – 120 mm, celková délka tìla i s ocasem pøiblinì 26 cm, váha 60 - 140 g.', 'plch zahradní',  'https://upload.wikimedia.org/wikipedia/commons/1/12/Eliomys_quercinus01.jpg'),
+	('hlodavci', 'Plch lesní je menší ne plch zahradní, mìøí 86 a 120 mm, ocásek je dlouhı 60 a 113 mm. Je zbarvenı lutohnìdì èi hnìdolutì, bøicho bıvá bílé nebo lutobílé. Na hlavì má pøes oko k ušnímu boltci èernı pruh. Uši jsou malé a kulaté. Váha 17-32 g, délka 77-112 mm.', 'plch lesní',  'https://upload.wikimedia.org/wikipedia/commons/4/45/Dryomys_nitedula.jpg'),
+	('hmyz', 'Hlava celkovì svìtlá, u mladıch jedincù naopak velmi tmavá. Bøicho: tmavohnìdé s bílou skvrnou na hrdle a na prsou, u starıch jedincù a bìlavé. Bodliny: nepravidelnì pruhované èi jednobarevné, smìøující do stran (rozcuchané), délka 17–22 mm. Poèet bodlin: 6000–7000. Rozmnoování: duben–záøí. Zimní spánek: øíjen/listopad–bøezen. Váha: 900g. Délka: 19–22 cm', 'jeek vıchodní',  'https://upload.wikimedia.org/wikipedia/commons/5/59/2008_Hedgehog_1020932.jpg'),
+	('hmyz', 'Jeek západní je se svou délkou 22–27 cm a hmotností mezi 0,9 a 1 kg o nìco vìtší ne jeho pøíbuznı, ji vıše zmínìnı jeek vıchodní. Na svìtlé hlavì má tmavı pruh táhnoucí se od èenichu k oèím a tvarovanı do písmena V. Bøišní strana tìla je u dospìlého jedince šedohnìdá a šedá s podélnou hnìdou skvrnou, u mláïat hnìdá bez skvrny. ', 'jeek západní',  'https://upload.wikimedia.org/wikipedia/commons/c/cb/Erinaceus_europaeus_%28Linnaeus%2C_1758%29.jpg'),
+	('hmyz', 'Zatímco u rejsce vodního jsou zadní tlapky témìø vdy delší ne 17 mm (obvykle 18-19 mm), u rejsce èerného mívají nejèastìji 15-16 mm a zcela vıjimeènì se blíí k 17 mm. Pokud jde o délku ocasu, u rejsce vodního obvykle namìøíme 50-75 mm a u rejsce èerného 40 a 52 mm.', 'rejsec èernı',  'https://upload.wikimedia.org/wikipedia/commons/3/32/Neomys_anomalus_01_by-dpc.jpg'),
+	('hmyz', 'Hlava s tìlem dosahuje velikosti 7,2 a 9,6 centimetrù, ocas 4,7 a 7,7 centimetrù, vıška 1,6 a 2 centimetry a hmotnost 9 a 23 gramù. Ušní boltec je zcela skrytı v srsti. Tlama trochu širší ne u pøíslušníkù rodu rejskù. Špièky zubù tmavì èervené. Pomìrnì velkı. Spodina ocasu lemována brvitım, støíbøitì šedım kılem, kterı funguje jako kormidlo.', 'rejsec vodní',  'https://upload.wikimedia.org/wikipedia/commons/9/98/Neomys_fodiens_TF_090829.jpg'),
+	('hmyz', 'Rejsek obecnı mìøí prùmìrnì 55–82 mm na délku (bez ocasu) a váí pøiblinì 5–12 gramù. Rejsci jsou charakteristiètí svou sametovì tmavohnìdou srstí, která je na bocích svìtlejší a na bøiše lutavá. Nedospìlí rejsci mají srst kratší a do doby, kdy zaènou línat a letní srst nahradí srst zimní.', 'rejsek obecnı',  'https://upload.wikimedia.org/wikipedia/commons/c/cf/SorexAraneus_wwalas_02.JPG'),
+	('hmyz', 'Celková délka hlavy s tìlem se pohybuje od 4,3 do 6,4 centimetrù a délka ocasu od 3,1 do 4,9 centimetrù. Je vysokı 0,9 a 1,2 centimetrù a váí 2,5 a 7,5 gramù. Je velmi podobnı rejskovi obecnému, je však menší, svìtlejší a èasto šedì zbarvenı. Ocas mívá delší a porostlı hustší srstí.', 'rejsek malı',  'https://upload.wikimedia.org/wikipedia/commons/a/ae/Sorex_minutus.jpg'),
+	('hmyz', 'Od bìlozubky šedé se liší obvykle vìtší velikostí a zbarvením, nebo mezi tmavším, šedohnìdım a hnìdım høbetem a svìtlou, témìø bílou spodní stranou tìla, má na bocích vıraznou a ostrou hranici.', 'bìlozubka bìlobøichá',  'https://upload.wikimedia.org/wikipedia/commons/1/10/Crocidura_leucodon-1.jpg'),
+	('hmyz', 'Od rejskù a rejscù se bìlozubky liší hlavnì osrstìním ocasu, na kterém jim kromì krátké pøiléhavé srsti ještì øídce vyrùstají delší a odstávající chlupy, dobøe patrné zejména v proti svìtle. Vedle toho mají bìlozubky i vìtší ušní boltce. Jméno dostaly podle zubù, které jsou na rozdíl od èervenì pigmentovaného chrupu rejskù a rejscù bílé. Tìlesnou velikostí se bìlozubka šedá øadí k menším druhùm rejskovitıch.', 'bìlozubka šedá',  'https://upload.wikimedia.org/wikipedia/commons/9/95/Gartenspitzmaus.jpg'),
+	('hmyz', 'Krtek má válcovité tìlo, okolo 12 cm dlouhé. Samice jsou obvykle menší. Oèi má malé a skryté za chlupy, zrak má proto špatnı. Naopak sluch a èich má vyvinutı. Uši jsou jen malımi vıstupky v kùi. Srst má obvykle tmavì hnìdou, ale protoe díky ivotu pod zemí nejsou ani jiné barvy znevıhodnìny, vyskytuje se celá øada odstínù.', 'krtek obecnı',  'https://upload.wikimedia.org/wikipedia/commons/8/80/Close-up_of_mole.jpg'),
+	('primat', 'Èlovìk se (jako ostatní souèasní hominini) iví rostlinnou i ivoèišnou potravou. Modernìjším druhùm èlovìka, vèetnì jediného souèasnì ijícího èlovìka moudrého, je vlastní uívání odìvù jednak pro ochranu pøed klimatickımi vlivy a jinımi mechanickımi a tepelnımi úèinky okolního prostøedí a jednak jako souèást spoleèenského chování a jeho znakù a urèení role ve spoleènosti.', 'èlovìk moudrı',  'http://www.gamepark.cz/pictures/00/17/24/172453.jpg')
 	ON DUPLICATE KEY UPDATE name = VALUES( name);
-
-
 
 
 

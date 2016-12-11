@@ -9,39 +9,40 @@ function testik($ID, $conn){
 		$query = "SELECT * FROM animal WHERE ID=$ID";
 		$result = mysql_query($query, $conn);
 		$data = mysql_fetch_assoc($result);
+		$out = $_SESSION["index"] +1;
+		echo "<h2> Otázka: " . $out . "/20 </h2><br />";
 		?><img src="<?echo $data['picture'];?>" style="width:300px;height:228px"> <br /><?
 		//echo "<b>".$data['name']."</b>";
 		//$names = array($answer => 0, "odpoved1" => 0, "odpoved2" => 0, "odpoved3" => 0);
 		//$answers = array();
 		
     		//$query = "SELECT *, 0 AS answ FROM animal WHERE ID<> $ID LIMIT 3 UNION SELECT *, 1 AS answ FROM animal WHERE ID=$ID ORDER BY RAND() ";
-    		$query = "(SELECT * FROM animal WHERE ID <> $ID ORDER BY RAND() LIMIT 3) UNION (SELECT * FROM animal WHERE ID = $ID)  ORDER BY RAND()";
+    	$query = "(SELECT * FROM animal WHERE ID <> $ID ORDER BY RAND() LIMIT 3) UNION (SELECT * FROM animal WHERE ID = $ID)  ORDER BY RAND()";
 		$res = mysql_query($query, $conn);
 		?><table><?
+			$i = 0;
     		while($data=mysql_fetch_array($res)){
     			?>
     			<form method="POST">
 	    			<tr><td><?
-		              	if ($data["ID"] != $ID) 
 		                	echo $data["name"];
-		              	else
-		                	echo "<b>".$data['name']."</b>";
 		                ?>
-		      		<?echo $data["ID"];?></td>
+					</td>
 	    			<td><input type="hidden" name="hidden_answer" value="<?php echo $data["ID"];?>">
-				<td><input type="hidden" name="hidden_success" value="<?php echo $ID;?>">
-				<input type="submit" name="answ" value="Odpovědět"></td></tr>
-				<input type="submit" name="konec" value="Ukončit test"></td>
+					<td><input type="hidden" name="hidden_success" value="<?php echo $ID;?>">
+					<td><input type="submit" name="answ" value="Odpovědět"></td></tr>
+					<?if($i == 3){?><td><input type="submit" name="konec" value="Ukončit test"></td><?}?>
     			</form>
           		<?
+          		$i++;
     		}
 		?></table><?
 
 }
 
 function main($menu, $conn){
-?>
-<?if(isset($_SESSION["user"])){
+$description = "";
+if(isset($_SESSION["user"])){
 		//echo "lognuty uzivatel: " . $_SESSION["user"];	
 }?>
 <table id="wrapper" style="">
@@ -206,7 +207,7 @@ switch($menu){
 			$data = mysql_fetch_assoc($result);
 			?><h2><?echo $data['name'];?></h2>
 
-
+			<?$description = $data['descriptionCZ'];?>
 			<?if($currentpage > 1){
 				$prevpage = $currentpage - 1;
 				$sql = "SELECT * FROM animal WHERE ID='".($data['ID']-1)."'";
@@ -318,6 +319,7 @@ switch($menu){
 		break;
 
 	case 6:
+	/*FILTROVÁNÍ*/
 	unset($_SESSION['formSubmit']);
 	unset($_SESSION['type']);
 	$query = "SELECT * FROM test ";
@@ -407,6 +409,7 @@ switch($menu){
 	</form>
 	
 	<?
+	/*FILTROVÁNÍ*/
 		/*STRÁNKOVÁNÍ*/
 		if($res != ""){
 			$sql = "SELECT COUNT(*) FROM test ";
@@ -457,7 +460,7 @@ switch($menu){
 				?>
 					<tr>
 					<td><?if($true) echo "<b>"; echo $data["user_nick"];if($true) echo "</b>";?></td>
-					<td><?if($true) echo "<b>"; echo $data["body"];if($true) echo "</b>";?></td>
+					<td><?if($true) echo "<b>"; echo $data["body"]."/20";if($true) echo "</b>";?></td>
 					<td><?if($true) echo "<b>"; echo $data["time"];if($true) echo "</b>";?></td>
 					<tr>
 				<?
@@ -527,7 +530,7 @@ switch($menu){
   		</ul>
      </td>
     <td id="ss">
-      Data2
+      <?echo $description;?>
     </td>
   </tr>
 </table>

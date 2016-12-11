@@ -47,6 +47,7 @@
 				.mysql_real_escape_string($_SESSION["user"])."','"
 				.$_SESSION["body"]."')";
 			$result = mysql_query($query, $conn);
+			?><script>alert("Získal/a jste <?echo $_SESSION["body"];?> bodů");</script><?
 			$_GET["menu"] = 0;
 		}
 	}
@@ -57,6 +58,7 @@
 			.mysql_real_escape_string($_SESSION["user"])."','"
 			.$_SESSION["body"]."')";
 		$result = mysql_query($query, $conn);
+		?><script>alert("Získal/a jste <?echo $_SESSION["body"];?> bodů");</script><?
 		$_GET["menu"] = 0;
 	}
 
