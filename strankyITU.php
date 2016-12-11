@@ -308,6 +308,29 @@ switch($menu){
 		}
 		break;
 
+	case 6:
+		$query = "SELECT * FROM test";
+		$result = mysql_query($query, $conn);
+		echo "<table>";
+		echo "<tr><td>Uživatel</td><td>Počet bodů</td><td>Datum</td></tr>";
+		while($data = mysql_fetch_assoc($result)){
+			$true = 0;
+			if(isset($_SESSION["user"])){
+				if($data["user_nick"] == $_SESSION["user"]){
+					$true = 1;
+				}
+			}
+			?>
+				<tr>
+				<td><?if($true) echo "<b>"; echo $data["user_nick"];if($true) echo "</b>";?></td>
+				<td><?if($true) echo "<b>"; echo $data["body"];if($true) echo "</b>";?></td>
+				<td><?if($true) echo "<b>"; echo $data["time"];if($true) echo "</b>";?></td>
+				<tr>
+			<?
+		}
+		echo "</table>";
+		break;
+
 	case 10:
 		unset($_SESSION['formSubmit']);
 		unset($_SESSION['type']);
