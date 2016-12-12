@@ -262,9 +262,9 @@ switch($menu){
 		unset($_SESSION['type']);	
 		?>
 			<p>
-        <h2>Nápověda</h2> <br>
-				Tato aplikace slouží k výuce savců. V nepřihlášeném stavu můžete procházet výukou, ale nemůžete testovat vaše znalosti.
-				Ovšem pokud se u nás přihlásíte, získáte možnost účastnit se testů a můžete porovnávat své výsledky s druhými. <br>
+        		<h2>Nápověda</h2> <br>
+			Tato aplikace slouží k výuce savců. V nepřihlášeném stavu můžete procházet výukou, ale nemůžete testovat vaše znalosti.
+			Ovšem pokud se u nás přihlásíte, získáte možnost účastnit se testů a můžete porovnávat své výsledky s druhými. <br>
 				
 			</p>
 	<?$description = "©Tým xnodza00, Fakulta informačních technologií VUT v Brně, Božetěchova 2, 612 66 Brno";?>		
