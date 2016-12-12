@@ -39,8 +39,9 @@
 	}
 
 
-	if(isset($_POST["answ"])){
-		if($_POST["hidden_answer"] == $_POST["hidden_success"]) $_SESSION["body"]++;
+	if(isset($_POST["intest"])){
+		//if($_POST["hidden_success"] == $_POST["answ".$_POST["hidden_answer"]]) $_SESSION["body"]++;
+    if(isset($_POST["answ".$_POST["hidden_success"]])) $_SESSION["body"]++;
 		$_SESSION["index"]++;
 		if($_SESSION["index"] > 19){
 			$query = "INSERT INTO test(user_nick, body) VALUES('"

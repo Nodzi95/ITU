@@ -1,19 +1,29 @@
 * {margin: 0; padding: 0; }
-html, body {background-color: #F5FD36; height: 100%; width: 100%; }
+html, body {background-color: #F5FD36; height: 100%; width: 100%; min-height:700px; min-width:1000px; font-size: 20px; }
 #wrapper {height: 100%; width: 100%; }
 //td {border: 1px solid black; }
-td {overflow:hidden;}
-#ff {background: #67DD2F; height: 50%; width: 1px; }
+//td {overflow:hidden; }
+#ff {background: #67DD2F; height: 50%; width: 1px; Vertical-align:top; }
 #ff a:hover {background-color: #64FF19; }
-#sf {background: #519331; height: 50%; Vertical-align:bottom; overflow:hidden; }
+#sf {background: #519331; height: 50%; Vertical-align:bottom; overflow:hidden; padding-top: auto; }
 #sf a:hover {background-color: #64FF19; }
 #ff a:hover {background-color: #64FF19; }
-#fs {background: #F9FD96; }
-#ss {background: #F6F076;}
-//#fake {height: 10%; }
-table {border-spacing: 0px; border-collapse: collapse; }
+#fs {background: #F9FD96; text-align: center; padding: 10px; }
+#fs table {width:100px; }
+#ss {background: #F6F076; text-align: center; padding: 10px; }
+#wide {width: 200px; }
+table {border-spacing: 0px; border-collapse: collapse;}
+form table {margin: 0px auto; }
+form table td {text-align: left; white-space: nowrap; }
 ul {list-style-type: none; width: 100%; overflow:hidden; height: 100%; display: inline-block; }
 li a {display: block; text-align:center; height: 65px; width: 65px; padding: 6px 0 0 6px; }
 li a img {display: block; height: 55px; width: 55px; }
-li a:hover {background-color: red; }
+#fs img, #ss img {margin: 0 40px; }
+#fs a img, #ss a img {opacity: 0.5; } 
+#fs a img:hover, #ss a img:hover {opacity: 1.0; }
+.answb {background-color: #E6E066; border: none; padding: 20px 15px; margin: 30px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; width: 300px; }
+.answc {position: fixed; bottom: 0; right: 0;background-color: #E6E066; border: none; padding: 20px 15px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; width: 200px; }
+.answb:hover {background-color: yellow; }                             
+.answc:hover {background-color: #E67300; }
+.troll {width: 200px; height:300px; }
 //http://paletton.com/#uid=a1W2G0kllllvAJ9qtt1gddEb55Y

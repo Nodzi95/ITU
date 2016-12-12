@@ -18,26 +18,17 @@ function testik($ID, $conn){
 		
     		//$query = "SELECT *, 0 AS answ FROM animal WHERE ID<> $ID LIMIT 3 UNION SELECT *, 1 AS answ FROM animal WHERE ID=$ID ORDER BY RAND() ";
     	$query = "(SELECT * FROM animal WHERE ID <> $ID ORDER BY RAND() LIMIT 3) UNION (SELECT * FROM animal WHERE ID = $ID)  ORDER BY RAND()";
-		$res = mysql_query($query, $conn);
-		?><table><?
-			$i = 0;
-    		while($data=mysql_fetch_array($res)){
-    			?>
-    			<form method="POST">
-	    			<tr><td><?
-		                	echo $data["name"];
-		                ?>
-					</td>
-	    			<td><input type="hidden" name="hidden_answer" value="<?php echo $data["ID"];?>">
-					<td><input type="hidden" name="hidden_success" value="<?php echo $ID;?>">
-					<td><input type="submit" name="answ" value="Odpovědět"></td></tr>
-					<?if($i == 3){?><td><input type="submit" name="konec" value="Ukončit test"></td><?}?>
-    			</form>
-          		<?
-          		$i++;
-    		}
-		?></table><?
-
+  		$res = mysql_query($query, $conn);
+    	$description = '<form method="POST"><input type="hidden" name="intest" value="PES"><table><tr>';	
+      $i = 1;
+      while($data=mysql_fetch_array($res)){
+          if($i==3)
+            $description .= '</tr><tr>';
+	        $description .= '<td><input type="submit" class="answb" name="answ'.$data["ID"].'" value="'.$data["name"].'"></td>'; 
+          $i++;
+   		} 
+		$description.= '</tr><tr><td><input type="hidden" name="hidden_success" value="'.$ID.'"><div id="wide"></div></td><td><input type="submit" class="answc" name="konec" value="Ukončit test"></td></tr></table></form>';
+    return $description;
 }
 
 function main($menu, $conn){
@@ -70,9 +61,7 @@ switch($menu){
 		unset($_SESSION['formSubmit']);
 		unset($_SESSION['type']);
 		?>
-			<p>
-				<span>Ví­tejte ve výuce zvířat</span>
-			</p>		
+    <h2>Vítejte v naučné webové aplikaci o savcích</h2>		
 	<?break;
 
 	case 1:
@@ -154,23 +143,22 @@ switch($menu){
 		$res = mysql_query($query, $conn);
 	}
 	?>
+  <? $description = '<form name="search_form" method="POST" >';
+	//<form name="search_form" method="POST" >
+	$description .= '<input type="checkbox" name="type[]" value="all"';
+  if($all == 1) $description .= "checked";
+  $description .= '>Vše <input type="checkbox" name="type[]" value="selma"';
+  if($selma == 1) $description .= "checked";
+  $description .= '>Šelmy <input type="checkbox" name="type[]" value="sudo"';
+  if($sudo == 1) $description .= "checked"; 
+  $description .= '>Sudokopytníci <input type="checkbox" name="type[]" value="hlodavci"';
+  if($hlodavci == 1) $description .= "checked";   
+  $description .= '>Hlodavci <input type="checkbox" name="type[]" value="hmyz"';
+  if($hmyz == 1) $description .= "checked";   
+  $description .= '>Hmyzožravci <input type="checkbox" name="type[]" value="primat"';
+  if($primat == 1) $description .= "checked";
+  $description .= '>Primáti<input type="submit" name="formSubmit" value="Filter"/></form><br><p>';                                    
 
-
-	
-
-
-	<form name="search_form" method="POST" >
-	<input type="checkbox" name="type[]" value="all" <?php if($all == 1) echo "checked"?>> Vše
-  	<input type="checkbox" name="type[]" value="selma" <?php if($selma == 1) echo "checked"?>> Šelma
-	<input type="checkbox" name="type[]" value="sudo" <?php if($sudo == 1) echo "checked"?>> Sudokopytníci
-	<input type="checkbox" name="type[]" value="hlodavci" <?php if($hlodavci == 1) echo "checked"?>> Hlodavci
-	<input type="checkbox" name="type[]" value="hmyz" <?php if($hmyz == 1) echo "checked"?>> Hmyzožravci
-	<input type="checkbox" name="type[]" value="primat" <?php if($primat == 1) echo "checked"?>> Primáti<br>
-	<input type="submit" name="formSubmit" value="Filter"/>
-	</form>
-	
-	<?
-		
 		if($res != ""){
 			$sql = "SELECT COUNT(*) FROM animal ";
 			if($prikaz != ""){
@@ -205,18 +193,23 @@ switch($menu){
 			$sql .= " LIMIT $offset, $rowsperpage";
 			$result = mysql_query($sql, $conn);
 			$data = mysql_fetch_assoc($result);
-			?><h2><?echo $data['name'];?></h2>
+			?>	<div style="height:100%;"><h2><?echo $data['name'];?></h2>
 
-			<?$description = $data['descriptionCZ'];?>
+			<?$description .= $data['descriptionCZ']."</p>";  ///!!!
+        ?>
 			<?if($currentpage > 1){
 				$prevpage = $currentpage - 1;
 				$sql = "SELECT * FROM animal WHERE ID='".($data['ID']-1)."'";
 				$result = mysql_query($sql, $conn);
 				$levo = mysql_fetch_assoc($result);
-				echo "<a href='{$_SERVER['PHP_SELF']}?menu=1&currentpage=$prevpage'>"
-				?><img src="<?echo $levo['picture'];?>" style="width:150px;height:114px"></a><?
-			}?>
-			<img src="<?echo $data['picture'];?>" style="width:300px;height:228px"><?
+				echo "<a href='{$_SERVER['PHP_SELF']}?menu=1&currentpage=$prevpage'>";
+				?><img src="<?echo $levo['picture'];?>" style="width:auto;height:105px"></a><?
+  			} else {
+           ?><a><img src="<?echo $levo['picture'];?>" style="opacity:0.0;width:auto;height:105px"></a><?
+        }
+
+      ?>
+		  <img src="<?echo $data['picture'];?>" style="width:auto;height:300px"><?
 
 
 			if($currentpage != $totalpages){
@@ -225,8 +218,10 @@ switch($menu){
 				$result = mysql_query($sql, $conn);
 				$pravo = mysql_fetch_assoc($result);
 				echo "<a href='{$_SERVER['PHP_SELF']}?menu=1&currentpage=$nextpage'>"
-				?><img src="<?echo $pravo['picture'];?>" style="width:150px;height:114px"></a><?
-			}
+				?><img src="<?echo $pravo['picture'];?>" style="width:auto;height:105px"></a><?
+			 } else {
+          ?><a><img src="<?echo $pravo['picture'];?>" style="opacity:0.0;width:auto;height:105px"></a><?
+        }
 			?><br /><?
 			
 			$range = 3;
@@ -252,7 +247,7 @@ switch($menu){
 			$_SESSION["formSubmit"] = "Filter";
 			if(isset($array)) $_SESSION["type"] = $array;
 			else{ $_SESSION["type"][] = 'all';}
-		}
+		}?></div><?
 	break;
 
 	case 2:
@@ -261,13 +256,13 @@ switch($menu){
 		unset($_SESSION['formSubmit']);	
 		unset($_SESSION['type']);	
 		?>
-			<p>
-        		<h2>Nápověda</h2> <br>
+			
+        		<h2>Nápověda</h2><p>
 			Tato aplikace slouží k výuce savců. V nepřihlášeném stavu můžete procházet výukou, ale nemůžete testovat vaše znalosti.
 			Ovšem pokud se u nás přihlásíte, získáte možnost účastnit se testů a můžete porovnávat své výsledky s druhými. <br>
 				
 			</p>
-	<?$description = "©Tým xnodza00, Fakulta informačních technologií VUT v Brně, Božetěchova 2, 612 66 Brno";?>		
+	<?$description = "©Tým xnodza00, Fakulta informačních technologií VUT v Brně, Božetěchova 2, 612 66 Brno";?>			
 	<?break;
 	
 	case 3:
@@ -277,27 +272,27 @@ switch($menu){
 		unset($_SESSION['type']);	
 		?>
 			<h2>Přihlášení</h2>
-			<table>
 			<form method="POST">
+			<table>
 				<tr><td><label>Login: </label></td><td><input type="text" name="name"/></td></tr>
 				<tr><td><label>Heslo: </label></td><td><input type="password" name="pass"/></td></tr>
 				<tr><td></td><td><input class="button" type="submit" value="Přihlásit"/></td></tr>
-			</form>
 			</table>	
+      </form>
 	<?break;
 
 	case 4:
 		unset($_SESSION['formSubmit']);	
 		unset($_SESSION['type']);	
 		?>
-		<h2>Registrace</h2>
-		<table>
+    <h2>Registrace</h2>
 		<form method="POST">
+		<table>
 			<tr><td><label>Login:</label></td><td><input type="text" name="rlogin" value="<?php if(isset($_POST["rlogin"])) echo $_POST["rlogin"];?>"/></td></tr>
 			<tr><td><label>Heslo:</label></td><td><input type="password" name="rpass" value="<?php if(isset($_POST["rpass"])) echo $_POST["rpass"];?>"/></td></tr>
 			<tr><td></td><td><input type="submit" name="reg" value="Registrovat"/></td></tr>
-		</form>
 		</table>
+		</form>
 	<?break;
 		
 	case 5:
@@ -450,8 +445,8 @@ switch($menu){
 
 
 			<?
-			echo "<table>";
-			echo "<tr><td>Uživatel</td><td>Počet bodů</td><td>Datum</td></tr>";
+			echo "<form><table>";
+			echo "<tr><td><div id=\"wide\">Uživatel</div></td><td>Počet bodů<div id=\"wide\"></div></td><td>Datum<div id=\"wide\"></div></td></tr>";
 			while($data = mysql_fetch_assoc($result)){
 				$true = 0;
 				if(isset($_SESSION["user"])){
@@ -464,10 +459,10 @@ switch($menu){
 					<td><?if($true) echo "<b>"; echo $data["user_nick"];if($true) echo "</b>";?></td>
 					<td><?if($true) echo "<b>"; echo $data["body"]."/20";if($true) echo "</b>";?></td>
 					<td><?if($true) echo "<b>"; echo $data["time"];if($true) echo "</b>";?></td>
-					<tr>
+					</tr>
 				<?
 			}
-			echo "</table>";
+			echo "</table></form>";
 
 			$range = 3;
 
@@ -505,7 +500,7 @@ switch($menu){
 		unset($_SESSION['filt']);
 		unset($_SESSION['formSubmit']);
 		unset($_SESSION['type']);
-		testik($_SESSION["IDs"][$_SESSION["index"]], $conn);
+		$description = testik($_SESSION["IDs"][$_SESSION["index"]], $conn);
 		break;	
 
 	default:
@@ -521,6 +516,7 @@ switch($menu){
   </tr>
   <tr>
      <td id="sf">
+      <div id="hig"></div>
   		<ul>
   			<!-- <li><a href="?menu=2">Kontakt</a></li> -->
         <li><a href="?menu=2"><img src="pics/help.svg" alt="Napoveda"></a></li>
