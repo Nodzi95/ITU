@@ -262,12 +262,12 @@ switch($menu){
 		unset($_SESSION['type']);	
 		?>
 			<p>
-        Nápověda <br>
-				Božetěchova 2 <br>
-				Brno, Královo Pole <br>
-				email: <a href="mailto:xnodza00@stud.fit.vutbr.cz">xnodza00@stud.fit.vutbr.cz</a><br>
-				tel: 123 456 789
-			</p>		
+        <h2>Nápověda</h2> <br>
+				Tato aplikace slouží k výuce savců. V nepřihlášeném stavu můžete procházet výukou, ale nemůžete testovat vaše znalosti.
+				Ovšem pokud se u nás přihlásíte, získáte možnost účastnit se testů a můžete porovnávat své výsledky s druhými. <br>
+				
+			</p>
+	<?$description = "©Tým xnodza00, Fakulta informačních technologií VUT v Brně, Božetěchova 2, 612 66 Brno";?>		
 	<?break;
 	
 	case 3:
@@ -290,11 +290,12 @@ switch($menu){
 		unset($_SESSION['formSubmit']);	
 		unset($_SESSION['type']);	
 		?>
+		<h2>Registrace</h2>
 		<table>
 		<form method="POST">
 			<tr><td><label>Login:</label></td><td><input type="text" name="rlogin" value="<?php if(isset($_POST["rlogin"])) echo $_POST["rlogin"];?>"/></td></tr>
 			<tr><td><label>Heslo:</label></td><td><input type="password" name="rpass" value="<?php if(isset($_POST["rpass"])) echo $_POST["rpass"];?>"/></td></tr>
-			<tr><td></td><td><input type="submit" name="reg" value="registrovat"/></td></tr>
+			<tr><td></td><td><input type="submit" name="reg" value="Registrovat"/></td></tr>
 		</form>
 		</table>
 	<?break;
