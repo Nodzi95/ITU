@@ -54,7 +54,7 @@ if(isset($_SESSION["user"])){
   				
   			<?if(isset($_SESSION["user"])){?>
   			<li><a href="?menu=5"><img src="pics/exam.svg" alt="Test"></a></li>
-  			<li><a href="?menu=6">Výsledky</a></li>
+  			<li><a href="?menu=6"><img src="pics/results.svg" alt="Vysledky"></a></li>
   			<?}else{
   			//<li><a href="?menu=3"><img src="pics/login.svg" alt="Login"></a></li>
   			//<li><a href="?menu=4">Registrovat</a></li>
@@ -262,6 +262,7 @@ switch($menu){
 		unset($_SESSION['type']);	
 		?>
 			<p>
+        Nápověda <br>
 				Božetěchova 2 <br>
 				Brno, Královo Pole <br>
 				email: <a href="mailto:xnodza00@stud.fit.vutbr.cz">xnodza00@stud.fit.vutbr.cz</a><br>
@@ -520,12 +521,13 @@ switch($menu){
   <tr>
      <td id="sf">
   		<ul>
-  			<li><a href="?menu=2">Kontakt</a></li>
+  			<!-- <li><a href="?menu=2">Kontakt</a></li> -->
+        <li><a href="?menu=2"><img src="pics/help.svg" alt="Napoveda"></a></li>
   			<?if(isset($_SESSION["user"])){?>
   			<li><a href="?menu=7"><img src="pics/logout.svg" alt="Logout"></a></li>
   			<?}else{?>
   			<li><a href="?menu=3"><img src="pics/login.svg" alt="Login"></a></li>
-  			<li><a href="?menu=4">Registrovat</a></li>
+  			<li><a href="?menu=4"><img src="pics/register.svg" alt="Registrovat"></a></li>
   			<?}?>		
   		</ul>
      </td>
