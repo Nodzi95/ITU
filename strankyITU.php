@@ -11,22 +11,22 @@ function testik($ID, $conn){
 		$data = mysql_fetch_assoc($result);
 		$out = $_SESSION["index"] +1;
 		echo "<h2> Otázka: " . $out . "/20 </h2><br />";
-		?><img src="<?echo $data['picture'];?>" style="width:300px;height:228px"> <br /><?
+		?><img src="<?echo $data['picture'];?>" style="width:auto;height:300px"> <br /><?
 		//echo "<b>".$data['name']."</b>";
 		//$names = array($answer => 0, "odpoved1" => 0, "odpoved2" => 0, "odpoved3" => 0);
 		//$answers = array();
-
+		
     		//$query = "SELECT *, 0 AS answ FROM animal WHERE ID<> $ID LIMIT 3 UNION SELECT *, 1 AS answ FROM animal WHERE ID=$ID ORDER BY RAND() ";
     	$query = "(SELECT * FROM animal WHERE ID <> $ID ORDER BY RAND() LIMIT 3) UNION (SELECT * FROM animal WHERE ID = $ID)  ORDER BY RAND()";
   		$res = mysql_query($query, $conn);
-    	$description = '<form method="POST"><input type="hidden" name="intest" value="PES"><table><tr>';
+    	$description = '<form method="POST"><input type="hidden" name="intest" value="PES"><table><tr>';	
       $i = 1;
       while($data=mysql_fetch_array($res)){
           if($i==3)
             $description .= '</tr><tr>';
-	        $description .= '<td><input type="submit" class="answb" name="answ'.$data["ID"].'" value="'.$data["name"].'"></td>';
+	        $description .= '<td><input type="submit" class="answb" name="answ'.$data["ID"].'" value="'.$data["name"].'"></td>'; 
           $i++;
-   		}
+   		} 
 		$description.= '</tr><tr><td><input type="hidden" name="hidden_success" value="'.$ID.'"><div id="wide"></div></td><td><input type="submit" class="answc" name="konec" value="Ukončit test"></td></tr></table></form>';
     return $description;
 }
@@ -34,7 +34,7 @@ function testik($ID, $conn){
 function main($menu, $conn){
 $description = "";
 if(isset($_SESSION["user"])){
-		//echo "lognuty uzivatel: " . $_SESSION["user"];
+		//echo "lognuty uzivatel: " . $_SESSION["user"];	
 }?>
 <table id="wrapper" style="">
   <tr>
@@ -42,14 +42,14 @@ if(isset($_SESSION["user"])){
   		<ul>
   			<li><a href="?menu=0"><img src="pics/home.svg" alt="Domu"></a></li>
   			<li><a href="?menu=1"><img src="pics/book.svg" alt="Vyuka"></a></li>
-
+  				
   			<?if(isset($_SESSION["user"])){?>
   			<li><a href="?menu=5"><img src="pics/exam.svg" alt="Test"></a></li>
   			<li><a href="?menu=6"><img src="pics/results.svg" alt="Vysledky"></a></li>
   			<?}else{
   			//<li><a href="?menu=3"><img src="pics/login.svg" alt="Login"></a></li>
   			//<li><a href="?menu=4">Registrovat</a></li>
-  			}?>
+  			}?>		
   		</ul>
      </td>
     <td id="fs">
@@ -61,14 +61,14 @@ switch($menu){
 		unset($_SESSION['formSubmit']);
 		unset($_SESSION['type']);
 		?>
-    <h2>Vítejte v naučné webové aplikaci o savcích</h2>
+    <h2>Vítejte v naučné webové aplikaci o savcích</h2>		
 	<?break;
 
 	case 1:
 	unset($_SESSION['filter']);
 	unset($_SESSION['filt']);
 	$query = "SELECT * FROM animal ";
-
+	
 	$res = "ah";
 	$all = 0;
 	$selma = 0;
@@ -81,16 +81,16 @@ switch($menu){
 		if(isset($_POST['type']) || isset($_SESSION['type'])){
 			if(isset($_POST['formSubmit'])) {
 				if(isset($_POST['type'])){
-					$array = $_POST['type'];
+					$array = $_POST['type']; 
 				}
 				else{
 					$array = array();
-					$res = "";
+					$res = "";				
 				}
 
-			}
-			else {
-				$array = $_SESSION['type'];
+			}			
+			else { 
+				$array = $_SESSION['type']; 
 			}
 			if(in_array('all', $array)){
 				global $res, $all, $prikaz;
@@ -128,14 +128,14 @@ switch($menu){
 					//echo $query;
 					$res = mysql_query($query, $conn);
 				}
-
+				
 			}
 		}
 		else{
 			global $res;
 			$res = "";
 		}
-
+	
 	}
 	else{
 		global $res, $all;
@@ -150,14 +150,14 @@ switch($menu){
   $description .= '>Vše <input type="checkbox" name="type[]" value="selma"';
   if($selma == 1) $description .= "checked";
   $description .= '>Šelmy <input type="checkbox" name="type[]" value="sudo"';
-  if($sudo == 1) $description .= "checked";
+  if($sudo == 1) $description .= "checked"; 
   $description .= '>Sudokopytníci <input type="checkbox" name="type[]" value="hlodavci"';
-  if($hlodavci == 1) $description .= "checked";
+  if($hlodavci == 1) $description .= "checked";   
   $description .= '>Hlodavci <input type="checkbox" name="type[]" value="hmyz"';
-  if($hmyz == 1) $description .= "checked";
+  if($hmyz == 1) $description .= "checked";   
   $description .= '>Hmyzožravci <input type="checkbox" name="type[]" value="primat"';
   if($primat == 1) $description .= "checked";
-  $description .= '>Primáti<input type="submit" name="formSubmit" value="Filtr"/></form><br><p>';
+  $description .= '>Primáti<input type="submit" class="filb" name="formSubmit" value="Filtr"/></form><br><br /><p>';                                    
 
 		if($res != ""){
 			$sql = "SELECT COUNT(*) FROM animal ";
@@ -180,7 +180,7 @@ switch($menu){
 			if($currentpage > $totalpages){
 				$currentpage = $totalpages;
 			}
-
+			
 			if($currentpage < 1){
 				$currentpage = 1;
 			}
@@ -205,7 +205,7 @@ switch($menu){
 				echo "<a href='{$_SERVER['PHP_SELF']}?menu=1&currentpage=$prevpage'>";
 				?><img src="<?echo $levo['picture'];?>" style="width:auto;height:105px"></a><?
   			} else {
-           ?><a><img src="<?echo $levo['picture'];?>" style="opacity:0.0;width:auto;height:105px"></a><?
+           ?><a><img src="" style="opacity:0.0;width:120px;height:105px"></a><?
         }
 
       ?>
@@ -220,10 +220,10 @@ switch($menu){
 				echo "<a href='{$_SERVER['PHP_SELF']}?menu=1&currentpage=$nextpage'>"
 				?><img src="<?echo $pravo['picture'];?>" style="width:auto;height:105px"></a><?
 			 } else {
-          ?><a><img src="<?echo $pravo['picture'];?>" style="opacity:0.0;width:auto;height:105px"></a><?
+          ?><a><img src="" style="opacity:0.0;width:120px;height:105px"></a><?
         }
 			?><br /><?
-
+			
 			$range = 3;
 
 			if($currentpage > 1){
@@ -244,7 +244,7 @@ switch($menu){
 			if($currentpage != $totalpages){
 				echo " <a href='{$_SERVER['PHP_SELF']}?menu=1&currentpage=$totalpages'>>></a> ";
 			}
-			$_SESSION["formSubmit"] = "Filtr";
+			$_SESSION["formSubmit"] = "Filter";
 			if(isset($array)) $_SESSION["type"] = $array;
 			else{ $_SESSION["type"][] = 'all';}
 		}?></div><?
@@ -253,48 +253,48 @@ switch($menu){
 	case 2:
 		unset($_SESSION['filter']);
 		unset($_SESSION['filt']);
-		unset($_SESSION['formSubmit']);
-		unset($_SESSION['type']);
+		unset($_SESSION['formSubmit']);	
+		unset($_SESSION['type']);	
 		?>
-
+			
         		<h2>Nápověda</h2><p>
 			Tato aplikace slouží k výuce savců. V nepřihlášeném stavu můžete procházet výukou, ale nemůžete testovat vaše znalosti.
 			Ovšem pokud se u nás přihlásíte, získáte možnost účastnit se testů a můžete porovnávat své výsledky s druhými. <br>
-
+				
 			</p>
-	<?$description = "©Tým xnodza00, Fakulta informačních technologií VUT v Brně, Božetěchova 2, 612 66 Brno";?>
+	<?$description = "©Tým xnodza00, Fakulta informačních technologií VUT v Brně, Božetěchova 2, 612 66 Brno";?>			
 	<?break;
-
+	
 	case 3:
 		unset($_SESSION['filter']);
 		unset($_SESSION['filt']);
-		unset($_SESSION['formSubmit']);
-		unset($_SESSION['type']);
+		unset($_SESSION['formSubmit']);	
+		unset($_SESSION['type']);	
 		?>
 			<h2>Přihlášení</h2>
 			<form method="POST">
 			<table>
 				<tr><td><label>Login: </label></td><td><input type="text" name="name"/></td></tr>
 				<tr><td><label>Heslo: </label></td><td><input type="password" name="pass"/></td></tr>
-				<tr><td></td><td><input class="button" type="submit" value="Přihlásit"/></td></tr>
-			</table>
+				<tr><td></td><td><input class="filc" type="submit" width="100px" value="Přihlásit"/></td></tr>
+			</table>	
       </form>
 	<?break;
 
 	case 4:
-		unset($_SESSION['formSubmit']);
-		unset($_SESSION['type']);
+		unset($_SESSION['formSubmit']);	
+		unset($_SESSION['type']);	
 		?>
     <h2>Registrace</h2>
 		<form method="POST">
 		<table>
 			<tr><td><label>Login:</label></td><td><input type="text" name="rlogin" value="<?php if(isset($_POST["rlogin"])) echo $_POST["rlogin"];?>"/></td></tr>
 			<tr><td><label>Heslo:</label></td><td><input type="password" name="rpass" value="<?php if(isset($_POST["rpass"])) echo $_POST["rpass"];?>"/></td></tr>
-			<tr><td></td><td><input type="submit" name="reg" value="Registrovat"/></td></tr>
+			<tr><td></td><td><input type="submit" class="filc" name="reg" value="Registrovat"/></td></tr>
 		</table>
 		</form>
 	<?break;
-
+		
 	case 5:
 		unset($_SESSION['filter']);
 		unset($_SESSION['filt']);
@@ -308,9 +308,9 @@ switch($menu){
 			$x = test(62);
 			if(!in_array($x, $_SESSION["IDs"])){
 				$_SESSION["IDs"][$i] = $x;
-				$i++;
+				$i++;			
 			}
-
+			
 			?><script>window.location.href="?menu=10";</script><?
 		}
 		break;
@@ -320,7 +320,7 @@ switch($menu){
 	unset($_SESSION['formSubmit']);
 	unset($_SESSION['type']);
 	$query = "SELECT * FROM test ";
-
+	
 	$res = "ah";
 	$all = 0;
 	$me = 0;
@@ -331,16 +331,16 @@ switch($menu){
 		if(isset($_POST['filt']) || isset($_SESSION['filt'])){
 			if(isset($_POST['filter'])) {
 				if(isset($_POST['filt'])){
-					$array = $_POST['filt'];
+					$array = $_POST['filt']; 
 				}
 				else{
 					$array = array();
-					$res = "";
+					$res = "";				
 				}
 
-			}
-			else {
-				$array = $_SESSION['filt'];
+			}			
+			else { 
+				$array = $_SESSION['filt']; 
 			}
 			if(in_array('all', $array)){
 				global $res, $all, $prikaz;
@@ -388,7 +388,7 @@ switch($menu){
 			global $res;
 			$res = "";
 		}
-
+	
 	}
 	else{
 		global $res, $all;
@@ -402,9 +402,9 @@ switch($menu){
   	<input type="checkbox" name="filt[]" value="me" <?php if($me == 1) echo "checked"?>> Moje výsledky
 	<input type="checkbox" name="filt[]" value="up" <?php if($up == 1) echo "checked"?>> Seřadit vzestupně
 	<input type="checkbox" name="filt[]" value="down" <?php if($down == 1) echo "checked"?>> Seřadit sestupně
-	<input type="submit" name="filter" value="Filtr"/>
+	<input type="submit" name="filter" class="filb" value="Filtr"/>
 	</form>
-
+	
 	<?
 	/*FILTROVÁNÍ*/
 		/*STRÁNKOVÁNÍ*/
@@ -429,7 +429,7 @@ switch($menu){
 			if($currentpage > $totalpages){
 				$currentpage = $totalpages;
 			}
-
+			
 			if($currentpage < 1){
 				$currentpage = 1;
 			}
@@ -442,8 +442,6 @@ switch($menu){
 			$sql .= " LIMIT $offset, $rowsperpage";
 			$result = mysql_query($sql, $conn);
 			?><h2>Statistiky</h2>
-
-
 			<?
 			echo "<form><table>";
 			echo "<tr><td><div id=\"wide\">Uživatel</div></td><td>Počet bodů<div id=\"wide\"></div></td><td>Datum<div id=\"wide\"></div></td></tr>";
@@ -501,7 +499,7 @@ switch($menu){
 		unset($_SESSION['formSubmit']);
 		unset($_SESSION['type']);
 		$description = testik($_SESSION["IDs"][$_SESSION["index"]], $conn);
-		break;
+		break;	
 
 	default:
 		unset($_SESSION['filter']);
@@ -518,14 +516,13 @@ switch($menu){
      <td id="sf">
       <div id="hig"></div>
   		<ul>
-  			<!-- <li><a href="?menu=2">Kontakt</a></li> -->
         <li><a href="?menu=2"><img src="pics/help.svg" alt="Napoveda"></a></li>
   			<?if(isset($_SESSION["user"])){?>
   			<li><a href="?menu=7"><img src="pics/logout.svg" alt="Logout"></a></li>
   			<?}else{?>
   			<li><a href="?menu=3"><img src="pics/login.svg" alt="Login"></a></li>
   			<li><a href="?menu=4"><img src="pics/register.svg" alt="Registrovat"></a></li>
-  			<?}?>
+  			<?}?>		
   		</ul>
      </td>
     <td id="ss">
